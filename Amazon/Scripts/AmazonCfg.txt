@@ -1,0 +1,7 @@
+﻿APPEMAILADRESS:::WXNPI.Trace@finisar.com
+APPEMAILPWD:::abc@12345
+EMAILSERVER:::wmail.finisar.com
+
+SHAREFOLDERUSER:::brad.qiu
+SHAREFOLDERDOMIN:::china
+SHAREFOLDERPWD:::wangle@12345
