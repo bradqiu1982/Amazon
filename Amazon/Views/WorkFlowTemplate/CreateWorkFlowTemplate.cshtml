@@ -1,0 +1,61 @@
+﻿
+@{
+    ViewBag.Title = "CreateWorkFlowTemplate";
+}
+
+<ol class="breadcrumb">
+    <li><a href="#">WorkFlow Template</a></li>
+    <li class="active">Create WorkFlow Template</li>
+</ol>
+
+<script type="text/javascript" src="~/Scripts/workflowtemplate.js"></script>
+<script type="text/javascript">
+        $(function(){
+            WorkFlowTemplate.init();
+        })
+</script>
+
+<div id="jsmind_container"></div>
+<div class="js-operation">
+    <div class="row form-group">
+        <label class="col-xs-2">WorkFlowType</label>
+        <div class="col-xs-9">
+            <input type="text" class="form-control autocomplete-input"
+                   id="wf-type" name="wf-type" placeholder="Please choose one workflow type">
+        </div>
+    </div>
+    <div class="row form-group">
+        <label class="col-xs-2">StepList</label>
+        <div class="col-xs-9">
+            <input type="text" class="form-control autocomplete-input"
+                   id="wf-node" name="wf-node" autocomplete="off">
+        </div>
+    </div>
+    <div class="row form-group">
+        <div style="margin-left: 2%">
+            <input type="button" class="btn btn-danger node-op"
+                   id="del-wf-node" name="del-wf-node" value="Delete a node">
+            <input type="button" class="btn btn-success node-op"
+                   id="add-wf-node" name="add-wf-node" value="Add a node">
+        </div>
+    </div>
+    <hr />
+    <div>
+        <div class="row form-group">
+            <label class="col-xs-2">NewWorkFlowName</label>
+            <div class="col-xs-9">
+                <input type="text" class="form-control"
+                       id="nwf-name" name="nwf-name" placeholder="Please enter your new workflow name">
+            </div>
+        </div>
+        <div class="row form-group nwf-operation">
+            <div style="margin-left: 2%">
+                <input type="button" class="btn btn-warning nwf-op"
+                       id="save-nwf" name="save-nwf" value="Cache">
+                <input type="button" class="btn btn-success nwf-op"
+                       id="sumbit-nwf" name="sumbit-nwf" value="Submit">
+            </div>
+        </div>
+    </div>
+</div>
+

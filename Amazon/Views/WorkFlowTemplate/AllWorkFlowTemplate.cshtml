@@ -1,0 +1,105 @@
+﻿
+@{
+    ViewBag.Title = "AllWorkFlowTemplate";
+}
+
+<script type="text/javascript" src="~/Scripts/workflowtemplate.js"></script>
+<script type="text/javascript">
+        $(function(){
+            WorkFlowTemplate.show();
+        })
+</script>
+
+<div class="container bc-content">
+    <ol class="breadcrumb">
+        <li><a href="#">WorkFlow Template</a></li>
+        <li class="active">View WorkFlow Template</li>
+    </ol>
+</div>
+
+<div class="row wf-type-op">
+    <select id="wf-type" name="wf-type" class="form-control wf-type">
+        <option value="0">ALL</option>
+        <option value="1">RMA</option>
+        <option value="2">RMA1</option>
+        <option value="3">RMA2</option>
+    </select>
+</div>
+<div class="row wf-list">
+    <section class="wf-list-detail">
+        <div class="col-xs-3">
+            <div class="swf-info">
+                <label class="col-xs-12">WorkFlow Name:</label>
+                <span class="col-xs-12">WorkFlow 1 WorkFlow 1</span>
+                <input class="col-xs-12 form-control hidden" type="text" id="wf-name-0"
+                       name="wf-name-0" value="WorkFlow 1 WorkFlow 1">
+                <label class="col-xs-12">WorkFlow Type:</label>
+                <span class="col-xs-12">RMA1</span>
+            </div>
+            <div class="swf-op" data-id="wf-id">
+                <input type="button" class="btn btn-success edit-swf-op"
+                       id="edit-wf-btn-0" name="edit-wf-btn-0" value="Edit">
+                <input type="button" class="btn btn-danger del-swf-op"
+                       id="del-wf-btn-0" name="del-wf-btn-0" value="Delete">
+            </div>
+        </div>
+        <div class="jsmind_container col-xs-9" id="jc_0" data-id="wf-id"></div>
+    </section>
+    <section class="wf-list-detail">
+        <div class="col-xs-3">
+            <div class="swf-info">
+                <label class="col-xs-12">WorkFlow Name:</label>
+                <span class="col-xs-12">WorkFlow 1 WorkFlow 1</span>
+                <input class="col-xs-12 form-control hidden" type="text" id="wf-name-0"
+                       name="wf-name-0" value="WorkFlow 1 WorkFlow 1">
+                <label class="col-xs-12">WorkFlow Type:</label>
+                <span class="col-xs-12">RMA1</span>
+            </div>
+            <div class="swf-op" data-id="wf-id">
+                <input type="button" class="btn btn-success edit-swf-op"
+                       id="edit-wf-btn-0" name="edit-wf-btn-0" value="Edit">
+                <input type="button" class="btn btn-danger del-swf-op"
+                       id="del-wf-btn-0" name="del-wf-btn-0" value="Delete">
+            </div>
+        </div>
+        <div class="jsmind_container col-xs-9" id="jc_1" data-id="wf-id"></div>
+    </section>
+    <section class="wf-list-detail">
+        <div class="col-xs-3">
+            <div class="swf-info">
+                <label class="col-xs-12">WorkFlow Name:</label>
+                <span class="col-xs-12">WorkFlow 1 WorkFlow 1</span>
+                <input class="col-xs-12 form-control hidden" type="text" id="wf-name-0"
+                       name="wf-name-0" value="WorkFlow 1 WorkFlow 1">
+                <label class="col-xs-12">WorkFlow Type:</label>
+                <span class="col-xs-12">RMA1</span>
+            </div>
+            <div class="swf-op" data-id="wf-id">
+                <input type="button" class="btn btn-success edit-swf-op"
+                       id="edit-wf-btn-0" name="edit-wf-btn-0" value="Edit">
+                <input type="button" class="btn btn-danger del-swf-op"
+                       id="del-wf-btn-0" name="del-wf-btn-0" value="Delete">
+            </div>
+        </div>
+        <div class="jsmind_container col-xs-9" id="jc_2" data-id="wf-id"></div>
+    </section>
+    <section class="wf-list-detail">
+        <div class="col-xs-3">
+            <div class="swf-info">
+                <label class="col-xs-12">WorkFlow Name:</label>
+                <span class="col-xs-12">WorkFlow 1 WorkFlow 1</span>
+                <input class="col-xs-12 form-control hidden" type="text" id="wf-name-0"
+                       name="wf-name-0" value="WorkFlow 1 WorkFlow 1">
+                <label class="col-xs-12">WorkFlow Type:</label>
+                <span class="col-xs-12">RMA1</span>
+            </div>
+            <div class="swf-op" data-id="wf-id">
+                <input type="button" class="btn btn-success edit-swf-op"
+                       id="edit-wf-btn-0" name="edit-wf-btn-0" value="Edit">
+                <input type="button" class="btn btn-danger del-swf-op"
+                       id="del-wf-btn-0" name="del-wf-btn-0" value="Delete">
+            </div>
+        </div>
+        <div class="jsmind_container col-xs-9" id="jc_3" data-id="wf-id"></div>
+    </section>
+</div>

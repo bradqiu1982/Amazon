@@ -190,6 +190,7 @@
     <Compile Include="Models\EmailUtility.cs" />
     <Compile Include="Models\ExcelReader.cs" />
     <Compile Include="Models\RegistedWorkFlowStep.cs" />
+    <Compile Include="Models\RegistedWorkFlowType.cs" />
     <Compile Include="Models\RMAModule\CQEAddDispositionForEachSN.cs" />
     <Compile Include="Models\RMAModule\CQEAssignFAEngineer.cs" />
     <Compile Include="Models\RMAModule\CQEConfirmAssembly.cs" />
@@ -199,7 +200,7 @@
     <Compile Include="Models\RMAModule\CQESubmitInitFAR.cs" />
     <Compile Include="Models\RMAModule\CQMDecideLessonLearn.cs" />
     <Compile Include="Models\RMAModule\FinalFARCQEReview.cs" />
-    <Compile Include="Models\RMAModule\IntialFARCQEReview.cs" />
+    <Compile Include="Models\RMAModule\InitialFARCQEReview.cs" />
     <Compile Include="Models\RMAModule\PETESubmitFVRFAR.cs" />
     <Compile Include="Models\RMAModule\PEUpdateFlow.cs" />
     <Compile Include="Models\RMAModule\PQEApprove.cs" />
@@ -563,17 +564,29 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrapfileinput.css" />
+    <Content Include="Content\common.css" />
+    <Content Include="Content\images\FinisarLogo.jpg" />
     <Content Include="Content\jquery.dataTables.min.css" />
+    <Content Include="Content\jsmind.css" />
+    <Content Include="Scripts\amazon-db.txt" />
     <Content Include="Scripts\AmazonCfg.txt" />
+    <Content Include="Scripts\bootstrap-datepicker\bootstrap-datepicker.js" />
+    <Content Include="Scripts\bootstrap-datepicker\bootstrap-datepicker.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\jquery-1.12.4.min.js" />
+    <Content Include="Scripts\jquery-ui.min.js" />
+    <Content Include="Scripts\jsmind\jsmind.draggable.js" />
+    <Content Include="Scripts\jsmind\jsmind.js" />
+    <Content Include="Scripts\jsmind\jsmind.screenshot.js" />
     <Content Include="Scripts\npidepartmentmachine.txt" />
     <Content Include="Scripts\StandardPJList.txt" />
+    <Content Include="Scripts\workflowtemplate.js" />
     <Content Include="Views\favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\ajaxfileupload.js" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ckeditor\CHANGES.md" />
     <Content Include="ckeditor\LICENSE.md" />
     <Content Include="ckeditor\plugins\scayt\CHANGELOG.md" />
@@ -596,8 +609,6 @@
     <Content Include="ckeditor\skins\moono\readme.md" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\highcharts.js" />
-    <Content Include="Scripts\jquery-1.10.2.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-autocomplete\jquery.auto-complete.css" />
     <Content Include="Scripts\jquery-autocomplete\jquery.auto-complete.js" />
@@ -627,11 +638,11 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="userfiles\ImageUpload.ashx" />
     <Content Include="userfiles\Upload.ashx" />
-    <Content Include="Views\WorkFlowTemplate\Index.cshtml" />
+    <Content Include="Views\WorkFlowTemplate\AllWorkFlowTemplate.cshtml" />
+    <Content Include="Views\WorkFlowTemplate\CreateWorkFlowTemplate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\images\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -639,7 +650,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

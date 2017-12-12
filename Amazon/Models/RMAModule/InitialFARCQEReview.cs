@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Amazon.Models
 {
-    public class IntialFARCQEReview : WorkflowStepInterface
+    public class InitialFARCQEReview : WorkflowStepInterface
     {
     }
 }

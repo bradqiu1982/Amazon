@@ -9,8 +9,11 @@ namespace Amazon.Models
     public class REGISTERWORKFLOWSTEPTYPE
     {
         public static string RMA = "RMA";
+        public static string GENERAL = "GENERAL";
+
         public static string COMMON = "COMMON";
     }
+
 
     public class WorkflowStepStatus
     {

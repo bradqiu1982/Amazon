@@ -16,7 +16,7 @@ namespace Amazon.Models
         public string WorkflowStepName { set; get; }
         public string WorkflowStepType { set; get; }
 
-        public static List<RegistedWorkFlowStep> GetRegistedWorkflowStep()
+        private static List<RegistedWorkFlowStep> _GetRegistedWorkflowStep()
         {
             var ret = new List<RegistedWorkFlowStep>();
             ret.Add(new RegistedWorkFlowStep("PlannerCreateFAJO", REGISTERWORKFLOWSTEPTYPE.COMMON));
@@ -32,7 +32,7 @@ namespace Amazon.Models
             ret.Add(new RegistedWorkFlowStep("CQESubmitInitFAR", REGISTERWORKFLOWSTEPTYPE.RMA));
             ret.Add(new RegistedWorkFlowStep("CQMDecideLessonLearn", REGISTERWORKFLOWSTEPTYPE.RMA));
             ret.Add(new RegistedWorkFlowStep("FinalFARCQEReview", REGISTERWORKFLOWSTEPTYPE.RMA));
-            ret.Add(new RegistedWorkFlowStep("IntialFARCQEReview", REGISTERWORKFLOWSTEPTYPE.RMA));
+            ret.Add(new RegistedWorkFlowStep("InitialFARCQEReview", REGISTERWORKFLOWSTEPTYPE.RMA));
             ret.Add(new RegistedWorkFlowStep("PETESubmitFVRFAR", REGISTERWORKFLOWSTEPTYPE.RMA));
             ret.Add(new RegistedWorkFlowStep("PEUpdateFlow", REGISTERWORKFLOWSTEPTYPE.RMA));
             ret.Add(new RegistedWorkFlowStep("PQEApprove", REGISTERWORKFLOWSTEPTYPE.RMA));
@@ -52,6 +52,26 @@ namespace Amazon.Models
             });
             return ret;
         }
+
+        public static List<string> GetRegistedWorkflowStep(string type)
+        {
+            var ret = new List<string>();
+            var allstep = _GetRegistedWorkflowStep();
+            foreach (var item in allstep)
+            {
+                if (string.Compare(item.WorkflowStepType, REGISTERWORKFLOWSTEPTYPE.COMMON) == 0)
+                {
+                    ret.Add(item.WorkflowStepName);
+                }
+
+                if (string.Compare(item.WorkflowStepType, type) == 0)
+                {
+                    ret.Add(item.WorkflowStepName);
+                }
+            }
+            return ret;
+        }
+
     }
 
 }

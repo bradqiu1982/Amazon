@@ -1,0 +1,335 @@
+var WorkFlowTemplate = function(){
+    var wf_create = function(){
+        var _jm = null;
+        var _allsteps = [];
+        open_empty();
+        $('#wf-type').autoComplete({
+            minChars: 0,
+            source: function(term, suggest){
+                term = term.toLowerCase();
+                 $.post('/WorkFlowTemplate/RegistedWorkFlowTypeList', {}, function (output){
+                    var choices = output;
+                    var suggestions = [];
+                    for (i=0;i<choices.length;i++){
+                        if (~(choices[i]+' '+choices[i]).toLowerCase().indexOf(term))
+                            suggestions.push(choices[i]);
+                    }
+                    suggest(suggestions);
+                })
+            },
+            onSelect: function(e, term, item){
+                $('#wf-node').autoComplete({
+                    minChars: 0,
+                    source: function(term1, suggest){
+                        term1 = term1.toLowerCase();
+                        $.post('/WorkFlowTemplate/RegistedWorkFlowStepList',
+                        {
+                            type: term
+                        },function (output) {
+                            var choices = output;
+                            _allsteps = output;
+                            var suggestions = [];
+                            for (i=0;i<choices.length;i++){
+                                if (~(choices[i]+' '+choices[i]).toLowerCase().indexOf(term1))
+                                    suggestions.push(choices[i]);
+                            }
+                            suggest(suggestions);
+                         })
+                    },
+                });
+            }
+        });
+
+        $('body').on('click', '#add-wf-node', function(){
+            var node_id = jsMind.util.uuid.newid();
+            var node_val = $('#wf-node').val();
+            if(node_val == ""){
+                alert("Please select one step");
+                return false;
+            }
+
+            if (_allsteps.indexOf(node_val) == -1)
+            {
+                alert('Step ' + node_val + ' is not exist in step list');
+                $('#wf-node').val('');
+                return false;
+            }
+
+            if(_jm.mind == null || _jm.mind.root == null){
+                var mind = {
+                    "format":"node_array",
+                    "data":[
+                        {"id": node_id, "isroot":true, "topic": node_val}
+                    ]
+                };
+                _jm.show(mind);
+                _jm.select_node(node_id);
+                $('#wf-node').val('');
+            }
+            else{
+                var selected_node = _jm.get_selected_node();
+                if(!selected_node){
+                    alert('please select one step first.');
+                    return;
+                }
+                if(selected_node.data['status'] != null && selected_node.data['status'] == 0){
+                    return false;
+                }
+                var node_before = [];
+                node_before.push(selected_node);
+                get_node_before(selected_node, node_before);
+                var exist_flg = false;
+                for(var i = 0; i < node_before.length; i++){
+                    if(node_val == node_before[i].topic){
+                        alert('Step ' + node_val + ' has already exist  in same sub-flow');
+                        $('#wf-node').val('');
+                        return false;
+                    }
+                }
+                if(selected_node.children != null){
+                    for(var i = 0; i< selected_node.children.length; i++){
+                        if(node_val == selected_node.children[i].topic){
+                            alert("This step has already exist");
+                            alert('Step ' + node_val + ' has already exist in its brother step');
+                            $('#wf-node').val('');
+                            return false;
+                        }
+                    }
+                }
+
+                _jm.add_node(selected_node, node_id, node_val);
+                _jm.select_node(node_id);
+                $('#wf-node').val('');
+            }
+        })
+
+        $('body').on('click', '#del-wf-node', function(){
+            var selected_id = get_selected_nodeid();
+            if(selected_id == _jm.mind.root.id){
+                var mind = {
+                    "format":"node_array",
+                    "data":[]
+                }
+                _jm.show(mind);
+                return false;
+            }
+            if(!selected_id){
+                alert('please select one step first.');
+                return;
+            }
+            if(confirm("If you delete this step, all of next steps will be delete, Please confirm to delete this step？")){
+                _jm.remove_node(selected_id);
+            }
+        })
+
+        $('body').on('click', '#save-nwf', function(){
+             var edit_type = 'catch';
+             get_jm_data(edit_type);
+
+        })
+
+        $('body').on('click', '#sumbit-nwf', function(){
+            var edit_type = 'submit';
+            get_jm_data(edit_type);
+        })
+
+        function get_jm_data(edit_type){
+            if(_jm.mind == null || _jm.mind.root == null){
+                alert('Please add one step at least');
+                return false;
+            }
+            var jm_data = _jm.mind.nodes;
+            var wf_type = $.trim($('#wf-type').val());
+            if(wf_type == ""){
+                alert("Please select Workflow type");
+                return false;
+            }
+            var wf_name = $.trim($('#nwf-name').val());
+            if(wf_name == ''){
+                alert('Please input your workflow name');
+                return false;
+            }
+            var data = [];
+            $.each(jm_data, function(){
+                var str_tmp = {
+                    id: this.id,
+                    topic: this.topic,
+                    isroot: this.isroot,
+                    parentid: (this.parent != null) ? this.parent.id : ""
+                };
+                data.push(str_tmp);
+            })
+            var wf_id = jsMind.util.uuid.newid();;
+            alert(JSON.stringify(data));
+            $.post('/WorkFlowTemplate/StortNewWorkFlow',
+             {
+                 wf_id: wf_id,
+                 wf_type: wf_type,
+                 wf_name: wf_name,
+                 data: JSON.stringify(data)
+             }, function(output){
+                 if(output.success){
+                     window.location.href = '/WorkFlowTemplate/AllWorkFlowTemplate';
+                 }
+                 else{
+                     alert(output.msg);
+                 }
+             })
+        }
+
+        function get_selected_nodeid(){
+            var selected_node = _jm.get_selected_node();
+            if(!!selected_node){
+                return selected_node.id;
+            }else{
+                return null;
+            }
+        }
+
+        function get_new_node_id(new_node_id, node, node_before){
+            var all_nodes = _jm.mind.nodes;
+            var tmp_node;
+            $.each(all_nodes, function(){
+                if($.grep(node_before, function(e){ return e.id == this.id; }) == 0
+                    && this.id == new_node_id){
+                    new_node_id = node.id + '_' + new_node_id;
+                    return false;
+                }
+            });
+            return new_node_id;
+        }
+
+        function get_node_before(node, node_before){
+            if(node.parent != null){
+                if(node.parent.isroot != true){
+                    node_before.push(node.parent);
+                    get_node_before(node.parent, node_before)
+                }
+                else if(node.parent.isroot){
+                    node_before.push(node.parent);
+                }
+            }
+        }
+
+        function open_empty(){
+            var options = {
+                container:'jsmind_container',
+                theme:'greensea',
+                editable:true,
+                mode: 'side',
+                view:{
+                   hmargin:50,
+                   vmargin:20,
+                   line_width:2,
+                   line_color:'#555'
+               },
+               layout:{
+                   hspace:20,
+                   vspace:10,
+                   pspace:0
+               },
+
+            }
+            _jm = jsMind.createJMObj(options);
+        }
+
+        function open_ajax(){
+            var mind_url = 'data_example.json';
+            jsMind.util.ajax.get(mind_url,function(mind){
+                _jm.show(mind);
+            });
+        }
+    }
+    var wf_show = function(){
+        var _jm = [];
+        $.each($('.jsmind_container'), function(){
+            var options = {
+                container: $(this).attr('id'),
+                theme:'greensea',
+                editable:true,
+                mode: 'side',
+                view:{
+                   hmargin:50,
+                   vmargin:20,
+                   line_width:2,
+                   line_color:'#555'
+               },
+               layout:{
+                   hspace:20,
+                   vspace:10,
+                   pspace:0
+               },
+            }
+            // var wf_id = $(this).attr('data-id');
+            // $.post('/',
+            // {
+            //     wf_id: wf_id
+            // }, function(output){
+                var mind = {
+                    "format":"node_array",
+                    "data":[
+                        {"id":"root", "isroot":true, "topic":"jsMind"},
+
+                        {"id":"sub1", "parentid":"root", "topic":"sub1"},
+                        {"id":"sub11", "parentid":"sub1", "topic":"sub11"},
+                        {"id":"sub12", "parentid":"sub1", "topic":"sub12"},
+                        {"id":"sub13", "parentid":"sub1", "topic":"sub13"},
+                    ]
+                };
+                var _jm_tmp = jsMind.show(options, mind);
+                _jm.push(_jm_tmp);
+            // })
+        })
+
+        $('body').on('change', '#wf-type', function(){
+            var wf_type = $(this).val();
+            window.location.reload();
+            // window.location.href = '/WorkFlow/List?&type=' + wf_type;
+        })
+
+        //edit workflow template name
+        $('body').on('click', '.edit-swf-op', function(){
+            if($(this).val() == 'Edit'){
+                $(this).parent().prev().find('span').eq(0).hide();
+                $(this).parent().prev().find('input').removeClass('hidden');
+                $(this).val('Save');
+            }
+            else{
+                var nwf_name = $(this).parent().prev().find('input').val();
+                var nwf_id = $(this).parent().attr('data-id');
+                // $.post('/',
+                // {
+                //     nwf_name: nwf_name,
+                //     nwf_id: nwf_id
+                // }, function(output){
+                //     if(output.success){
+                        $(this).parent().prev().find('span').eq(0).html(nwf_name).show();
+                        $(this).parent().prev().find('input').addClass('hidden');
+                        $(this).val('Edit');
+                //     }
+                // })
+            }
+        })
+
+        //delete workflow template
+        $('body').on('click', '.del-swf-op', function(){
+            var nwf_id = $(this).parent().attr('data-id');
+            // $.post('/', 
+            // {
+            //     nwf_id: nwf_id
+            // }, function(output){
+            //     if(output.success){
+                $(this).parent().parent().parent().remove();
+            //     }
+            // })
+        })
+    }
+    return {
+        init: function(){
+            wf_create();
+        },
+        show: function(){
+            wf_show();
+        }
+    }
+}();
