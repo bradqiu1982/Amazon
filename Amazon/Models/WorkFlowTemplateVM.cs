@@ -37,6 +37,25 @@ namespace Amazon.Models
             return ret;
         }
 
+        public static List<WorkFlowTemplateVM> RetrieveWorkFlowTemplateByID(string wftid)
+        {
+            var ret = new List<WorkFlowTemplateVM>();
+            var sql = "select WFTID,WFTName,WFTType,WFTData from WorkFlowTemplateVM where WFTID = @WFTID order by UpdateTime DESC";
+            var param2 = new Dictionary<string, string>();
+            param2.Add("@WFTID", wftid);
+            var dbret = DBUtility.ExeLocalSqlWithRes(sql, null,param2);
+            foreach (var line in dbret)
+            {
+                var temp = new WorkFlowTemplateVM();
+                temp.WFTID = Convert.ToString(line[0]);
+                temp.WFTName = Convert.ToString(line[1]);
+                temp.WFTType = Convert.ToString(line[2]);
+                temp.WFTData = Convert.ToString(line[3]);
+                ret.Add(temp);
+            }
+            return ret;
+        }
+
         public static void RemoveWFT(string WFTID)
         {
             var sql = "update WorkFlowTemplateVM set Removed = 'TRUE' where WFTID = @WFTID";
@@ -67,6 +86,42 @@ namespace Amazon.Models
             param2.Add("@UpdateTime", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
             DBUtility.ExeLocalSqlNoRes(sql, param2);
         }
+
+        public static void CacheWFT(string UserName, string WFTName, string WFTType, string WFTData)
+        {
+            var sql = "delete from WorkFlowTemplateCache where UserName = @UserName";
+            var param1 = new Dictionary<string, string>();
+            param1.Add("@UserName", UserName);
+            DBUtility.ExeLocalSqlNoRes(sql, param1);
+
+            sql = "insert into WorkFlowTemplateCache(UserName,WFTName,WFTType,WFTData) values(@UserName,@WFTName,@WFTType,@WFTData)";
+            var param2 = new Dictionary<string, string>();
+            param2.Add("@UserName", UserName);
+            param2.Add("@WFTName", WFTName);
+            param2.Add("@WFTType", WFTType);
+            param2.Add("@WFTData", WFTData);
+            DBUtility.ExeLocalSqlNoRes(sql, param2);
+        }
+
+        public static List<WorkFlowTemplateVM> RetrieveCachedWFT(string UserName)
+        {
+            var ret = new List<WorkFlowTemplateVM>();
+            var sql = "select UserName,WFTName,WFTType,WFTData from WorkFlowTemplateCache where UserName = @UserName";
+            var param1 = new Dictionary<string, string>();
+            param1.Add("@UserName", UserName);
+            var dbret = DBUtility.ExeLocalSqlWithRes(sql, null, param1);
+            foreach (var line in dbret)
+            {
+                var temp = new WorkFlowTemplateVM();
+                temp.WFTID = Convert.ToString(line[0]);
+                temp.WFTName = Convert.ToString(line[1]);
+                temp.WFTType = Convert.ToString(line[2]);
+                temp.WFTData = Convert.ToString(line[3]);
+                ret.Add(temp);
+            }
+            return ret;
+        }
+
 
     }
 }

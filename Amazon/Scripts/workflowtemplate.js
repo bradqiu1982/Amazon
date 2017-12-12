@@ -123,13 +123,13 @@ var WorkFlowTemplate = function(){
         })
 
         $('body').on('click', '#save-nwf', function(){
-             var edit_type = 'catch';
+             var edit_type = 'cache';
              get_jm_data(edit_type);
 
         })
 
         $('body').on('click', '#sumbit-nwf', function(){
-            var edit_type = 'submit';
+            var edit_type = 'store';
             get_jm_data(edit_type);
         })
 
@@ -163,6 +163,7 @@ var WorkFlowTemplate = function(){
             alert(JSON.stringify(data));
             $.post('/WorkFlowTemplate/StortNewWorkFlow',
              {
+                 edit_type:edit_type,
                  wf_id: wf_id,
                  wf_type: wf_type,
                  wf_name: wf_name,
@@ -260,25 +261,21 @@ var WorkFlowTemplate = function(){
                    pspace:0
                },
             }
-            // var wf_id = $(this).attr('data-id');
-            // $.post('/',
-            // {
-            //     wf_id: wf_id
-            // }, function(output){
-                var mind = {
-                    "format":"node_array",
-                    "data":[
-                        {"id":"root", "isroot":true, "topic":"jsMind"},
-
-                        {"id":"sub1", "parentid":"root", "topic":"sub1"},
-                        {"id":"sub11", "parentid":"sub1", "topic":"sub11"},
-                        {"id":"sub12", "parentid":"sub1", "topic":"sub12"},
-                        {"id":"sub13", "parentid":"sub1", "topic":"sub13"},
-                    ]
-                };
-                var _jm_tmp = jsMind.show(options, mind);
-                _jm.push(_jm_tmp);
-            // })
+             var wf_id = $(this).attr('data-id');
+             $.post('/WorkFlowTemplate/WorkFlowTemplateByID',
+             {
+                 wf_id: wf_id
+             }, function (output) {
+                 if (output.sucess)
+                 {
+                    var mind = {
+                        "format":"node_array",
+                        "data": JSON.parse(output.data)
+                    };
+                    var _jm_tmp = jsMind.show(options, mind);
+                    _jm.push(_jm_tmp);
+                 }
+             })
         })
 
         $('body').on('change', '#wf-type', function(){
@@ -314,14 +311,14 @@ var WorkFlowTemplate = function(){
         //delete workflow template
         $('body').on('click', '.del-swf-op', function(){
             var nwf_id = $(this).parent().attr('data-id');
-            // $.post('/', 
-            // {
-            //     nwf_id: nwf_id
-            // }, function(output){
-            //     if(output.success){
+            $.post('/WorkFlowTemplate/RemoveWorkFlowTemplateByID',
+             {
+                 nwf_id: nwf_id
+             }, function(output){
+                 if(output.sucess){
                 $(this).parent().parent().parent().remove();
-            //     }
-            // })
+                 }
+             })
         })
     }
     return {

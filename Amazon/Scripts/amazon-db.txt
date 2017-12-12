@@ -11,3 +11,15 @@ CREATE TABLE [dbo].[WorkFlowTemplateVM] (
     [APV2]     NVARCHAR (MAX) DEFAULT ('') NOT NULL,
     [APV3]     DATETIME       DEFAULT ('1982-05-06 10:00:00') NOT NULL
 );
+
+
+CREATE TABLE [dbo].[WorkFlowTemplateCache] (
+    [UserName]   NVARCHAR (MAX) DEFAULT ('') NOT NULL,
+    [WFTName]     NVARCHAR (MAX) DEFAULT ('') NOT NULL,
+    [WFTType]  NVARCHAR (MAX) DEFAULT ('') NOT NULL,
+    [WFTData]     NVARCHAR (MAX) DEFAULT ('') NOT NULL,
+	[APV1]     NVARCHAR (MAX) DEFAULT ('') NOT NULL,
+    [APV2]     NVARCHAR (MAX) DEFAULT ('') NOT NULL,
+    [APV3]     DATETIME       DEFAULT ('1982-05-06 10:00:00') NOT NULL
+);
+
