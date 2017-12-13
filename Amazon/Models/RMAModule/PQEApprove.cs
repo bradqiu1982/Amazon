@@ -7,5 +7,9 @@ namespace Amazon.Models
 {
     public class PQEApprove : WorkflowStepInterface
     {
+        public PQEApprove()
+        {
+            StepName = "PQEApprove";
+        }
     }
 }

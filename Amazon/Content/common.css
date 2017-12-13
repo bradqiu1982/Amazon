@@ -110,3 +110,66 @@ body{
     padding: 0;
     margin-bottom: -20px;
 }
+
+.jc-span-v{
+    height: 20px;
+    padding: 2px 5px;
+    color: #fff;
+    background-color: #f0ad4e;
+}
+
+.jc-span-d{
+    height: 30px;
+    padding: 2px 5px;
+    color: #fff;
+    background-color: #337ab7;
+}
+.jc, .jc_detail{
+    margin-top: -32px;
+}
+
+.jc_view{
+    margin-top: -20px;
+}
+
+
+.wf-list-op{
+    margin-bottom: 2%;
+}
+
+.padding-gap{
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.wfe-table{
+    margin-bottom: 10px;
+}
+
+.wfe-table tbody tr td{
+    border-top: 0;
+}
+
+.view-wfe-op, .del-wfe-op{
+    margin-right: 2%;
+}
+
+.span-zoom{
+    cursor: pointer;
+    height: 30px;
+    color: #7f7f7f;
+    margin-top: 2px;
+    z-index: 1000;
+}
+
+.span-zoom-in{
+    margin-left: 90%;
+}
+
+.d-span-zoom-in{
+    margin-left: 80%;
+}
+
+.span-zoom-out{
+    margin-left: 1%;
+}

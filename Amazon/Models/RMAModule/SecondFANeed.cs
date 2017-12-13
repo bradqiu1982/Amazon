@@ -7,5 +7,9 @@ namespace Amazon.Models
 {
     public class SecondFANeed : WorkflowStepInterface
     {
+        public SecondFANeed()
+        {
+            StepName = "SecondFANeed";
+        }
     }
 }

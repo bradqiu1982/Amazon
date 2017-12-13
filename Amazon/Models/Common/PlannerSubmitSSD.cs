@@ -7,5 +7,9 @@ namespace Amazon.Models
 {
     public class PlannerSubmitSSD : WorkflowStepInterface
     {
+        public PlannerSubmitSSD()
+        {
+            StepName = "PlannerSubmitSSD";
+        }
     }
 }

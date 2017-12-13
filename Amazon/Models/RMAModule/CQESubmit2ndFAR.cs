@@ -7,5 +7,9 @@ namespace Amazon.Models
 {
     public class CQESubmit2ndFAR : WorkflowStepInterface
     {
+        public CQESubmit2ndFAR()
+        {
+            StepName = "CQESubmit2ndFAR";
+        }
     }
 }

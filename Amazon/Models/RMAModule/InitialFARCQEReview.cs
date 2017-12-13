@@ -7,5 +7,10 @@ namespace Amazon.Models
 {
     public class InitialFARCQEReview : WorkflowStepInterface
     {
+        public InitialFARCQEReview()
+        {
+            StepName = "InitialFARCQEReview";
+        }
+
     }
 }

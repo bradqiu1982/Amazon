@@ -44,6 +44,7 @@ namespace Amazon.Models
             ret.Add(new RegistedWorkFlowStep("RMAClerkConfirmFADeliver", REGISTERWORKFLOWSTEPTYPE.RMA));
             ret.Add(new RegistedWorkFlowStep("RMACloseFAJO", REGISTERWORKFLOWSTEPTYPE.RMA));
             ret.Add(new RegistedWorkFlowStep("RMAFAKickoffModule", REGISTERWORKFLOWSTEPTYPE.RMA));
+            ret.Add(new RegistedWorkFlowStep("RMARRKickoffModule", REGISTERWORKFLOWSTEPTYPE.RMA));
             ret.Add(new RegistedWorkFlowStep("SecondFANeed", REGISTERWORKFLOWSTEPTYPE.RMA));
 
             ret.Sort(delegate (RegistedWorkFlowStep step1, RegistedWorkFlowStep step2)

@@ -7,5 +7,9 @@ namespace Amazon.Models
 {
     public class FinalFARCQEReview : WorkflowStepInterface
     {
+        public FinalFARCQEReview()
+        {
+            StepName = "FinalFARCQEReview";
+        }
     }
 }

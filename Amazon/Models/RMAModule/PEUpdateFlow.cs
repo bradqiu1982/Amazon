@@ -7,5 +7,9 @@ namespace Amazon.Models
 {
     public class PEUpdateFlow : WorkflowStepInterface
     {
+        public PEUpdateFlow()
+        {
+            StepName = "PEUpdateFlow";
+        }
     }
 }

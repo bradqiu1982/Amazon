@@ -5,11 +5,11 @@ using System.Web;
 
 namespace Amazon.Models
 {
-    public class CQEConfirmAssembly : WorkflowStepInterface
+    public class RMARRKickoffModule : WorkflowStepInterface
     {
-        public CQEConfirmAssembly()
+        public RMARRKickoffModule()
         {
-            StepName = "CQEConfirmAssembly";
+            StepName = "RMARRKickoffModule";
         }
     }
 }

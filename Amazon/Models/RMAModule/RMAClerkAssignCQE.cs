@@ -7,5 +7,9 @@ namespace Amazon.Models
 {
     public class RMAClerkAssignCQE : WorkflowStepInterface
     {
+        public RMAClerkAssignCQE()
+        {
+            StepName = "RMAClerkAssignCQE";
+        }
     }
 }

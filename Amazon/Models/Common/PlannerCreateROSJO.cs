@@ -7,5 +7,9 @@ namespace Amazon.Models
 {
     public class PlannerCreateROSJO : WorkflowStepInterface
     {
+        public PlannerCreateROSJO()
+        {
+            StepName = "PlannerCreateROSJO";
+        }
     }
 }

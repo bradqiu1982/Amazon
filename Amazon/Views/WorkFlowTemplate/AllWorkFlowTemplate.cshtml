@@ -1,7 +1,6 @@
 ﻿@model IEnumerable<Amazon.Models.WorkFlowTemplateVM>
 @{
     ViewBag.Title = "AllWorkFlowTemplate";
-    var idx = 1;
     var wfidx = 0;
 }
 
@@ -21,14 +20,15 @@
 
 <div class="row wf-type-op">
     <select id="wf-type" name="wf-type" class="form-control wf-type">
-        <option value="0">ALL</option>
+        <option value="ALL" selected="selected" disabled="disabled">WorkFlow Template Type</option>
+        <option value="ALL">ALL</option>
         @foreach (var type in ViewBag.WorkFlowTypeList)
         {
-            <option value="@idx">@type</option>
-            idx = idx + 1;
+            <option value="@type">@type</option>
         }
     </select>
 </div>
+
 <div class="row wf-list">
     @foreach (var item in Model)
     {
@@ -37,19 +37,20 @@
                 <div class="swf-info">
                     <label class="col-xs-12">WorkFlow Name:</label>
                     <span class="col-xs-12">@item.WFTName</span>
-                    <input class="col-xs-12 form-control hidden" type="text" id="wf-name-@wfidx"
-                           name="wf-name-@wfidx" value="@item.WFTName">
                     <label class="col-xs-12">WorkFlow Type:</label>
                     <span class="col-xs-12">@item.WFTType</span>
                 </div>
                 <div class="swf-op" data-id="@item.WFTID">
-                    <input type="button" class="btn btn-success edit-swf-op"
-                           id="edit-wf-btn-@wfidx" name="edit-wf-btn-@wfidx" value="Edit">
                     <input type="button" class="btn btn-danger del-swf-op"
                            id="del-wf-btn-@wfidx" name="del-wf-btn-@wfidx" value="Delete">
                 </div>
             </div>
-            <div class="jsmind_container col-xs-9" id="jc_@wfidx" data-id="@item.WFTID"></div>
+
+            <div class="col-xs-9 padding-gap">
+                <i class="glyphicon glyphicon-zoom-in span-zoom span-zoom-in"></i>
+                <i class="glyphicon glyphicon-zoom-out span-zoom span-zoom-out"></i>
+                <div class="jsmind_container jc" id="jc_@wfidx" data-id="@item.WFTID"></div>
+            </div>
         </section>
         wfidx = wfidx + 1;
     }

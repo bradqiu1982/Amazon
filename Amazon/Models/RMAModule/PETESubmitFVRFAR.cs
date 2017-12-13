@@ -7,5 +7,9 @@ namespace Amazon.Models
 {
     public class PETESubmitFVRFAR : WorkflowStepInterface
     {
+        public PETESubmitFVRFAR()
+        {
+            StepName = "PETESubmitFVRFAR";
+        }
     }
 }

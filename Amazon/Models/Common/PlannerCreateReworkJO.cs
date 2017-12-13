@@ -7,6 +7,9 @@ namespace Amazon.Models
 {
     public class PlannerCreateReworkJO : WorkflowStepInterface
     {
-
+        public PlannerCreateReworkJO()
+        {
+            StepName = "PlannerCreateReworkJO";
+        }
     }
 }

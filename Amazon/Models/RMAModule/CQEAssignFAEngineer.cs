@@ -7,5 +7,9 @@ namespace Amazon.Models
 {
     public class CQEAssignFAEngineer : WorkflowStepInterface
     {
+        public CQEAssignFAEngineer()
+        {
+            StepName = "CQEAssignFAEngineer";
+        }
     }
 }

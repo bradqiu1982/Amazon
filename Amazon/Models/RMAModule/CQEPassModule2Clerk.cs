@@ -7,5 +7,10 @@ namespace Amazon.Models
 {
     public class CQEPassModule2Clerk : WorkflowStepInterface
     {
+        public CQEPassModule2Clerk()
+        {
+            StepName = "CQEPassModule2Clerk";
+        }
+
     }
 }

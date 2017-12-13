@@ -9,6 +9,7 @@ namespace Amazon.Models
     {
         public PlannerCreateFAJO()
         {
+            StepName = "PlannerCreateFAJO";
         }
     }
 

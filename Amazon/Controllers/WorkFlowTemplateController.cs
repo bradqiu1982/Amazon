@@ -10,11 +10,27 @@ namespace Amazon.Controllers
     public class WorkFlowTemplateController : Controller
     {
 
-        public ActionResult AllWorkFlowTemplate()
+        public ActionResult AllWorkFlowTemplate(string templatetype)
         {
             ViewBag.WorkFlowTypeList = RegistedWorkFlowType.GetRegistedWorkflowType();
             var vm = WorkFlowTemplateVM.RetrieveAllWorkFlowTemplate();
-            return View(vm);
+            if (string.IsNullOrEmpty(templatetype)
+                || string.Compare("ALL", templatetype.ToUpper()) == 0)
+            {
+                return View(vm);
+            }
+            else
+            {
+                var filtervm = new List<WorkFlowTemplateVM>();
+                foreach (var item in vm)
+                {
+                    if (string.Compare(item.WFTType.ToUpper(), templatetype.ToUpper()) == 0)
+                    {
+                        filtervm.Add(item);
+                    }
+                }
+                return View(filtervm);
+            }
         }
 
         public ActionResult CreateWorkFlowTemplate()

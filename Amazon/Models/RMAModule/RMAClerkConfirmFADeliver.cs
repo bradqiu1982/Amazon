@@ -7,5 +7,9 @@ namespace Amazon.Models
 {
     public class RMAClerkConfirmFADeliver : WorkflowStepInterface
     {
+        public RMAClerkConfirmFADeliver()
+        {
+            StepName = "RMAClerkConfirmFADeliver";
+        }
     }
 }

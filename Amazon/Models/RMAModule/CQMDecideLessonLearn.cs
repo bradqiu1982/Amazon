@@ -7,5 +7,9 @@ namespace Amazon.Models
 {
     public class CQMDecideLessonLearn : WorkflowStepInterface
     {
+        public CQMDecideLessonLearn()
+        {
+            StepName = "CQMDecideLessonLearn";
+        }
     }
 }

@@ -7,5 +7,9 @@ namespace Amazon.Models
 {
     public class CQEIssueRework : WorkflowStepInterface
     {
+        public CQEIssueRework()
+        {
+            StepName = "CQEIssueRework";
+        }
     }
 }

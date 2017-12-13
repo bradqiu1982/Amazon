@@ -7,5 +7,9 @@ namespace Amazon.Models
 {
     public class RMAAdminBookSO : WorkflowStepInterface
     {
+        public RMAAdminBookSO()
+        {
+            StepName = "RMAAdminBookSO";
+        }
     }
 }

@@ -7,5 +7,9 @@ namespace Amazon.Models
 {
     public class RMAAdminUpdateTrackingNum : WorkflowStepInterface
     {
+        public RMAAdminUpdateTrackingNum()
+        {
+            StepName = "RMAAdminUpdateTrackingNum";
+        }
     }
 }

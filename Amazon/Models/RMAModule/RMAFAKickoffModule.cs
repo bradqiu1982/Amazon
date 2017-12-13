@@ -9,7 +9,7 @@ namespace Amazon.Models
     {
         public RMAFAKickoffModule()
         {
-
+            StepName = "RMAFAKickoffModule";
         }
     }
 }

@@ -5,14 +5,15 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Amazon</title>
-    @*@Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")*@
+
+    @*@Styles.Render("~/Content/css")*@
 
     <link type="text/css" rel="stylesheet" href="~/Content/bootstrap.min.css" />
     <link type="text/css" rel="stylesheet" href="~/Scripts/jquery-autocomplete/jquery.auto-complete.css" />
     <link type="text/css" rel="stylesheet" href="~/Content/common.css" />
     <link type="text/css" rel="stylesheet" href="~/Content/jsmind.css" />
 
+    @Scripts.Render("~/bundles/modernizr")
     <script type="text/javascript" src="~/Scripts/jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="~/Scripts/bootstrap.min.js"></script>
     <script type="text/javascript" src="~/Scripts/jquery-autocomplete/jquery.auto-complete.js"></script>
@@ -34,10 +35,13 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">WorkFlow Template<span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a href="#">View WorkFlow Template</a>
+                                    <a href="/WorkFlowTemplate/AllWorkFlowTemplate">All WorkFlow Template</a>
                                 </li>
                                 <li>
-                                    <a href="#">Create WorkFlow Template</a>
+                                    <a href="/WorkFlowTemplate/CreateWorkFlowTemplate">Create WorkFlow Template</a>
+                                </li>
+                                <li>
+                                    <a href="/WorkFlowTemplate/CreateWorkFlowTemplate">Cached WorkFlow Template</a>
                                 </li>
                             </ul>
                         </li>
@@ -62,9 +66,9 @@
         </footer>
     </div>
 
-    <script type="text/javascript" src="~/Scripts/jquery-1.12.4.min.js"></script>
+    @*<script type="text/javascript" src="~/Scripts/jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="~/Scripts/bootstrap.min.js"></script>
-    <script type="text/javascript" src="~/Scripts/jquery-autocomplete/jquery.auto-complete.js"></script>
+    <script type="text/javascript" src="~/Scripts/jquery-autocomplete/jquery.auto-complete.js"></script>*@
     @RenderSection("scripts", required: false)
 </body>
 </html>

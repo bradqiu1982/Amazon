@@ -7,5 +7,9 @@ namespace Amazon.Models
 {
     public class RMACloseFAJO : WorkflowStepInterface
     {
+        public RMACloseFAJO()
+        {
+            StepName = "RMACloseFAJO";
+        }
     }
 }

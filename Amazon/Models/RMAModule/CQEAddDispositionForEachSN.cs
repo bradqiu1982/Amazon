@@ -7,6 +7,9 @@ namespace Amazon.Models
 {
     public class CQEAddDispositionForEachSN : WorkflowStepInterface
     {
-
+        public CQEAddDispositionForEachSN()
+        {
+            StepName = "CQEAddDispositionForEachSN";
+        }
     }
 }
