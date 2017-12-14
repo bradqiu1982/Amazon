@@ -10,22 +10,14 @@ namespace Amazon.Models
     {
         public static string RMA = "RMA";
         public static string GENERAL = "GENERAL";
-
         public static string COMMON = "COMMON";
     }
 
-    public class WorkflowStepStatus
+    public class WORKFLOWSTEPSTATUS
     {
         public static string working = "working";
         public static string done = "done";
         public static string pending = "pending";
-    }
-
-    public class WORKFLOWSTEPCHILDROUTE
-    {
-        public static string SingleChild = "SingleChild";
-        public static string YesNo = "YesNo";
-        public static string MultiChild = "MultiChild";
     }
 
     public class WORKFLOWNODEENABLE
@@ -41,11 +33,14 @@ namespace Amazon.Models
             NodeID = "";
             ParentNodeID = "";
             ContentID = "";
+            WorkFlowID = "";
             StepName = "";
-            StepType = "";
             StepStatus = "";
             IsRoot = false;
             BGColor = "#A6A6A6";
+
+            ChildrenIDList = new List<string>();
+            ChildrenNameList = new List<string>();
         }
 
         public string ContentID { get; set; }
@@ -54,13 +49,35 @@ namespace Amazon.Models
         public string ParentNodeID { get; set; }
         public string StepName { get; set; }
         public string StepStatus { get; set; }
-        public string StepType { get; set; }
         public bool IsRoot { get; set; }
 
-        public string HasMultiChildren { set; get; }
         public List<string> ChildrenIDList { set; get; }
         public List<string> ChildrenNameList { set; get; }
 
+        public void StoreStepBaseInfo()
+        {
+            var rootstr = IsRoot ? "TRUE" : "FALSE";
+            var childidliststr = "";
+            var childnameliststr = "";
+            foreach (var item in ChildrenIDList)
+            { childidliststr = childidliststr + item + ";"; }
+            foreach (var item in ChildrenNameList)
+            { childnameliststr = childnameliststr + item + ";"; }
+
+            var sql = "insert into WorkflowStepBaseInfo(WorkFlowID,NodeID,ParentNodeID,ContentID,StepName,StepStatus,IsRoot,ChildrenIDList,ChildrenNameList) "
+                + " values(@WorkFlowID,@NodeID,@ParentNodeID,@ContentID,@StepName,@StepStatus,@IsRoot,@ChildrenIDList,@ChildrenNameList) ";
+            var param = new Dictionary<string, string>();
+            param.Add("@WorkFlowID", WorkFlowID);
+            param.Add("@NodeID", NodeID);
+            param.Add("@ParentNodeID", ParentNodeID);
+            param.Add("@ContentID", ContentID);
+            param.Add("@StepName", StepName);
+            param.Add("@StepStatus", StepStatus);
+            param.Add("@IsRoot", rootstr);
+            param.Add("@ChildrenIDList", childidliststr);
+            param.Add("@ChildrenNameList", childnameliststr);
+            DBUtility.ExeLocalSqlNoRes(sql, param);
+        }
 
         private string bgcolor;
         public string BGColor
@@ -73,11 +90,11 @@ namespace Amazon.Models
                 }
                 else
                 {
-                    if (string.Compare(StepStatus, WorkflowStepStatus.working) == 0)
+                    if (string.Compare(StepStatus, WORKFLOWSTEPSTATUS.working) == 0)
                     {
                         return "#FF7400";
                     }
-                    else if (string.Compare(StepStatus, WorkflowStepStatus.done) == 0)
+                    else if (string.Compare(StepStatus, WORKFLOWSTEPSTATUS.done) == 0)
                     {
                         return "#0F4FA8";
                     }
@@ -101,8 +118,8 @@ namespace Amazon.Models
                 }
                 else
                 {
-                    if (string.Compare(StepStatus, WorkflowStepStatus.working) == 0
-                        || string.Compare(StepStatus, WorkflowStepStatus.done) == 0)
+                    if (string.Compare(StepStatus, WORKFLOWSTEPSTATUS.working) == 0
+                        || string.Compare(StepStatus, WORKFLOWSTEPSTATUS.done) == 0)
                     {
                         return WORKFLOWNODEENABLE.ENABLE;
                     }
@@ -124,8 +141,8 @@ namespace Amazon.Models
                 }
                 else
                 {
-                    if (string.Compare(StepStatus, WorkflowStepStatus.working) == 0
-                        || string.Compare(StepStatus, WorkflowStepStatus.done) == 0)
+                    if (string.Compare(StepStatus, WORKFLOWSTEPSTATUS.working) == 0
+                        || string.Compare(StepStatus, WORKFLOWSTEPSTATUS.done) == 0)
                     {
                         return "#0F4FA8";
                     }

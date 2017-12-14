@@ -19,6 +19,9 @@ namespace Amazon.Models
             return workflow;
         }
 
-
+        public override void StoreWorkFlow()
+        {
+            base.StoreWorkFlow();
+        }
     }
 }
