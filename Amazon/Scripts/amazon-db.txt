@@ -23,3 +23,36 @@ CREATE TABLE [dbo].[WorkFlowTemplateCache] (
     [APV3]     DATETIME       DEFAULT ('1982-05-06 10:00:00') NOT NULL
 );
 
+
+CREATE TABLE [dbo].[WorkFlowVM] (
+    [WorkFlowID]   NVARCHAR (200) DEFAULT ('') NOT NULL,
+    [WFTName]     NVARCHAR (MAX) DEFAULT ('') NOT NULL,
+    [WFTID]  NVARCHAR (200) DEFAULT ('') NOT NULL,
+    [WorkFlowType]     NVARCHAR (200) DEFAULT ('') NOT NULL,
+	[WorkFlowDesc]     NVARCHAR (MAX) DEFAULT ('') NOT NULL,
+	[WorkFlowRunningStatus]     NVARCHAR (200) DEFAULT ('') NOT NULL,
+	[CreateTime]     DATETIME       DEFAULT ('1982-05-06 10:00:00') NOT NULL,
+	[CompleteTime]     DATETIME       DEFAULT ('1982-05-06 10:00:00') NOT NULL,
+	[APV1]     NVARCHAR (200) DEFAULT ('') NOT NULL,
+    [APV2]     NVARCHAR (MAX) DEFAULT ('') NOT NULL,
+    [APV3]     DATETIME       DEFAULT ('1982-05-06 10:00:00') NOT NULL
+);
+
+
+CREATE TABLE [dbo].[WorkflowStepBaseInfo] (
+    [WorkFlowID]   NVARCHAR (200) DEFAULT ('') NOT NULL,
+    [NodeID]     NVARCHAR (200) DEFAULT ('') NOT NULL,
+    [ParentNodeID]  NVARCHAR (200) DEFAULT ('') NOT NULL,
+    [ContentID]     NVARCHAR (200) DEFAULT ('') NOT NULL,
+	[StepName]     NVARCHAR (200) DEFAULT ('') NOT NULL,
+	[StepStatus]     NVARCHAR (200) DEFAULT ('') NOT NULL,
+	[IsRoot]     NVARCHAR (200) DEFAULT ('') NOT NULL,
+	[ChildrenIDList]     NVARCHAR (MAX) DEFAULT ('') NOT NULL,
+	[ChildrenNameList]     NVARCHAR (MAX) DEFAULT ('') NOT NULL,
+	[InitUpdateTime]     DATETIME       DEFAULT ('1982-05-06 10:00:00') NOT NULL,
+	[UpdateTime]     DATETIME       DEFAULT ('1982-05-06 10:00:00') NOT NULL,
+	[APV1]     NVARCHAR (200) DEFAULT ('') NOT NULL,
+    [APV2]     NVARCHAR (MAX) DEFAULT ('') NOT NULL,
+    [APV3]     DATETIME       DEFAULT ('1982-05-06 10:00:00') NOT NULL
+);
+

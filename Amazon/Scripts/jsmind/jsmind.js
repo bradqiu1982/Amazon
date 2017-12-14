@@ -1426,7 +1426,7 @@
                 var node = this.mind.get_node(nodeid);
                 if(!!node){
                     if(!!bgcolor){
-                        node.data['background-color'] = bgcolor;
+                        node.data['background_color'] = bgcolor;
                     }
                     if(!!fgcolor){
                         node.data['foreground-color'] = fgcolor;
@@ -2453,8 +2453,8 @@
         },
 
         _reset_node_custom_style:function(node_element, node_data){
-            if('background-color' in node_data){
-                node_element.style.backgroundColor = node_data['background-color'];
+            if('background_color' in node_data){
+                node_element.style.backgroundColor = node_data['background_color'];
             }
             if('foreground-color' in node_data){
                 node_element.style.color = node_data['foreground-color'];
@@ -2529,7 +2529,7 @@
                 if(('visible' in node._data.layout) && !node._data.layout.visible){continue;}
                 pin = this.layout.get_node_point_in(node);
                 pout = this.layout.get_node_point_out(node.parent);
-                var pcolor = (node.data['line-color'] != null) ? node.data['line-color'] : this.opts.line_color;
+                var pcolor = (node.data['line_color'] != null) ? node.data['line_color'] : this.opts.line_color;
                 this.draw_line(pout,pin,_offset,canvas_ctx,pcolor);
             }
         },

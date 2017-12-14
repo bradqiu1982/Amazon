@@ -261,7 +261,7 @@ var WorkFlowTemplate = function(){
         }
     }
     var wf_show = function(){
-        var _jm = [];
+        var _jm = {};
         $.each($('.jsmind_container'), function(){
             var options = {
                 container: $(this).attr('id'),
@@ -293,7 +293,7 @@ var WorkFlowTemplate = function(){
                     };
                     var _jm_tmp = jsMind.show(options, mind);
                     _jm_tmp.view.setZoom(0.8);
-                    _jm.push(_jm_tmp);
+                    _jm[wf_id] = _jm_tmp;
                  }
              })
         })
@@ -342,7 +342,7 @@ var WorkFlowTemplate = function(){
         })
         
         $('body').on('click', '.span-zoom-in', function(){
-            var idx = $(this).parent().find('.jc').attr('id').split('_')[1];
+            var idx = $(this).parent().find('.jc').attr('data-id');
             if (_jm[idx].view.zoomIn()) {
                 $('.span-zoom').css('color', '#7f7f7f');
             } else {
@@ -350,7 +350,7 @@ var WorkFlowTemplate = function(){
             };
         })
         $('body').on('click', '.span-zoom-out', function(){
-            var idx = $(this).parent().find('.jc').attr('id').split('_')[1];
+            var idx = $(this).parent().find('.jc').attr('data-id');
             if (_jm[idx].view.zoomOut()) {
                 $('.span-zoom').css('color', '#7f7f7f');
             } else {

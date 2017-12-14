@@ -1,0 +1,137 @@
+﻿@model IEnumerable<Amazon.Models.WorkFlowVM>
+
+@{
+    ViewBag.Title = "AllWorkFlow";
+    var idx = 0;
+}
+
+<div class="container bc-content">
+    <ol class="breadcrumb">
+        <li><a href="#">WorkFlow</a></li>
+        <li class="active">View WorkFlow</li>
+    </ol>
+</div>
+
+
+<script type="text/javascript" src="~/Scripts/workflow.js"></script>
+<script type="text/javascript">
+        $(function(){
+            WorkFlow.init();
+        })
+</script>
+
+<div class="row wf-list-op">
+    <div class="col-xs-3 padding-gap">
+        <input type="text" class="form-control autocomplete-input"
+               id="wf-list" name="wf-list" autocomplete="off"
+               placeholder="Please choose WorkFlowTemplate">
+    </div>
+    <div class="col-xs-3">
+        <input type="text" class="form-control" id="wfe-name"
+               name="wfe-name" placeholder="Please enter your workflow name">
+    </div>
+    <div class="col-xs-1">
+        <input type="button" class="btn btn-success" id="btn-add-wfe"
+               name="btn-add-wfe" value="Create WorkFlow">
+    </div>
+</div>
+@if (Model != null)
+{
+    <div class="row wf-list">
+        @foreach (var item in Model)
+        {
+            <section class="wf-list-detail">
+                <div class="col-xs-3">
+                    <div class="swf-info">
+                        <table class="table table-condensed wfe-table">
+                            <tr>
+                                <td>WorkFlow Type</td>
+                                <td><strong>@item.WFTName</strong></td>
+                            </tr>
+                            <tr>
+                                <td>WorkFlow Desc</td>
+                                <td><strong>@item.WorkFlowDesc</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Spend Days</td>
+                                <td><strong>@item.SpendDays</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Title1</td>
+                                <td>Content1</td>
+                            </tr>
+                            <tr>
+                                <td>Title1</td>
+                                <td>Content1</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="wfe-op" data-id="@item.WorkFlowID">
+                        @*<input type="button" class="btn btn-success btn-sm view-wfe-op"
+                            id="view-wf-btn-@idx" name="edit-wf-btn-@idx" value="View">*@
+                        <input type="button" class="btn btn-danger btn-xs del-wfe-op"
+                               id="del-wf-btn-@idx" name="del-wf-btn-@idx" value="Delete">
+                    </div>
+                </div>
+                <div class="col-xs-3 padding-gap">
+                    <span class="jc-span-v">Status</span>
+                    <div class="jsmind_container jc_view" id="jc_view_@idx" data-id="@item.WorkFlowID"></div>
+                </div>
+                <div class="col-xs-6 padding-gap">
+                    <span class="jc-span-d">Detail</span>
+                    <i class="glyphicon glyphicon-zoom-in span-zoom d-span-zoom-in"></i>
+                    <i class="glyphicon glyphicon-zoom-out span-zoom span-zoom-out"></i>
+                    <div class="jsmind_container jc_detail" id="jc_detai_@idx" data-id="@item.WorkFlowID"></div>
+                </div>
+            </section>
+
+            idx = idx + 1;
+        }
+
+
+        @*<section class="wf-list-detail">
+                <div class="col-xs-3">
+                    <div class="swf-info">
+                        <table class="table table-condensed wfe-table">
+                            <tr>
+                                <td>Title2</td>
+                                <td>Content2</td>
+                            </tr>
+                            <tr>
+                                <td>Title2</td>
+                                <td>Content2</td>
+                            </tr>
+                            <tr>
+                                <td>Title2</td>
+                                <td>Content2</td>
+                            </tr>
+                            <tr>
+                                <td>Title2</td>
+                                <td>Content2</td>
+                            </tr>
+                            <tr>
+                                <td>Title2</td>
+                                <td>Content2</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="wfe-op" data-id="wfe-id">
+                        <input type="button" class="btn btn-success btn-sm view-wfe-op"
+                               id="view-wf-btn-1" name="edit-wf-btn-1" value="View">
+                        <input type="button" class="btn btn-danger btn-sm del-wfe-op"
+                               id="del-wf-btn-1" name="del-wf-btn-1" value="Delete">
+                    </div>
+                </div>
+                <div class="col-xs-3 padding-gap">
+                    <span class="jc-span-v">View</span>
+                    <div class="jsmind_container jc_view" id="jc_view_1" data-id="wfe-id"></div>
+                </div>
+                <div class="col-xs-6 padding-gap">
+                    <span class="jc-span-d">Detail</span>
+                    <i class="glyphicon glyphicon-zoom-in span-zoom d-span-zoom-in"></i>
+                    <i class="glyphicon glyphicon-zoom-out span-zoom span-zoom-out"></i>
+                    <div class="jsmind_container jc_detail" id="jc_detai_1" data-id="wfe-id"></div>
+                </div>
+            </section>*@
+    </div>
+}

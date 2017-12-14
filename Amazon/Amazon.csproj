@@ -175,6 +175,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\WorkFlowController.cs" />
     <Compile Include="Controllers\WorkFlowTemplateController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -647,6 +648,7 @@
     <Content Include="userfiles\Upload.ashx" />
     <Content Include="Views\WorkFlowTemplate\AllWorkFlowTemplate.cshtml" />
     <Content Include="Views\WorkFlowTemplate\CreateWorkFlowTemplate.cshtml" />
+    <Content Include="Views\WorkFlow\AllWorkFlow.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

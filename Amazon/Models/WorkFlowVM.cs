@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Amazon.Models
 {
-    public class WORKFLOWRUNNINGsTATUS
+    public class WORKFLOWRUNNINGSTATUS
     {
         public static string RUNNING = "RUNNING";
         public static string COMPLETE = "COMPLETE";
@@ -45,7 +45,7 @@ namespace Amazon.Models
 
         public virtual void StoreWorkFlow()
         {
-            var sql = "insert into WorkFlowVM(WorkFlowID,WFTName,WFTID,WorkFlowType,WorkFlowDesc,WorkFlowRunningStatus,CreateTime) value(@WorkFlowID,@WFTName,@WFTID,@WorkFlowType,@WorkFlowDesc,@WorkFlowRunningStatus,@CreateTime)";
+            var sql = "insert into WorkFlowVM(WorkFlowID,WFTName,WFTID,WorkFlowType,WorkFlowDesc,WorkFlowRunningStatus,CreateTime) values(@WorkFlowID,@WFTName,@WFTID,@WorkFlowType,@WorkFlowDesc,@WorkFlowRunningStatus,@CreateTime)";
             var param = new Dictionary<string, string>();
             param.Add("@WorkFlowID", WorkFlowID);
             param.Add("@WFTName", WFTName);
@@ -63,6 +63,44 @@ namespace Amazon.Models
 
         }
 
+        public static List<WorkFlowVM> RetrieveAllWorkFlow(string RunningStatus)
+        {
+            var ret = new List<WorkFlowVM>();
+
+            var sql = "select WorkFlowID,WFTName,WFTID,WorkFlowType,WorkFlowDesc,WorkFlowRunningStatus,CreateTime from WorkFlowVM where WorkFlowRunningStatus = @WorkFlowRunningStatus";
+            var param = new Dictionary<string, string>();
+            param.Add("@WorkFlowRunningStatus", RunningStatus);
+            var dbret = DBUtility.ExeLocalSqlWithRes(sql, null, param);
+            foreach (var line in dbret)
+            {
+                var WorkFlowID = Convert.ToString(line[0]);
+                var WFTName = Convert.ToString(line[1]);
+                var WFTID = Convert.ToString(line[2]);
+                var WorkFlowType = Convert.ToString(line[3]);
+                var WorkFlowDesc = Convert.ToString(line[4]);
+                var WorkFlowRunningStatus = Convert.ToString(line[5]);
+                var CreateTime = Convert.ToDateTime(line[6]);
+
+                Type objType = Type.GetType("Amazon.Models." + WorkFlowType + ", Amazon, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null");
+                object obj = Activator.CreateInstance(objType);
+                var tempflow = (WorkFlowVM)obj;
+                //if (tempflow != null)
+                {
+                    tempflow.WorkFlowID = WorkFlowID;
+                    tempflow.WFTName = WFTName;
+                    tempflow.WFTID = WFTID;
+                    tempflow.WorkFlowType = WorkFlowType;
+                    tempflow.WorkFlowDesc = WorkFlowDesc;
+                    tempflow.WorkFlowRunningStatus = WorkFlowRunningStatus;
+                    tempflow.CreateTime = CreateTime;
+                    ret.Add(tempflow);
+                }
+            }
+
+            return ret;
+        }
+
+
         public static string GetUniqKey()
         {
             return Guid.NewGuid().ToString("N");
@@ -79,7 +117,7 @@ namespace Amazon.Models
             if (workflowtemplate.Count > 0)
             {
                 var workflow = instance;
-                instance.WorkFlowRunningStatus = WORKFLOWRUNNINGsTATUS.RUNNING;
+                instance.WorkFlowRunningStatus = WORKFLOWRUNNINGSTATUS.RUNNING;
                 workflow.WorkFlowID = GetUniqKey();
                 workflow.WFTName = workflowtemplate[0].WFTName;
                 workflow.WFTID = workflowtemplate[0].WFTID;
@@ -134,11 +172,14 @@ namespace Amazon.Models
                 Type objType = Type.GetType("Amazon.Models."+ item.topic + ", Amazon, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null");
                 object obj = Activator.CreateInstance(objType);
                 var tempnode = (WorkflowStepInterface) obj;
-                tempnode.NodeID = item.id;
-                tempnode.ParentNodeID = item.parentid;
-                tempnode.StepName = item.topic;
-                tempnode.IsRoot = item.isroot;
-                instance.WorkFlowStepList.Add(tempnode);
+                //if (tempnode != null)
+                {
+                    tempnode.NodeID = item.id;
+                    tempnode.ParentNodeID = item.parentid;
+                    tempnode.StepName = item.topic;
+                    tempnode.IsRoot = item.isroot;
+                    instance.WorkFlowStepList.Add(tempnode);
+                }
             }
         }
 

@@ -139,6 +139,22 @@ namespace Amazon.Controllers
             return ret;
         }
 
+        public JsonResult WorkFlowTemplateKeyValueArray()
+        {
+            var allworkflowtemplate = WorkFlowTemplateVM.RetrieveAllWorkFlowTemplate();
+            var tempkeyvaluelist = new List<List<string>>();
+            foreach (var item in allworkflowtemplate)
+            {
+                var templist = new List<string>();
+                templist.Add(item.WFTID);
+                templist.Add(item.WFTName);
+                tempkeyvaluelist.Add(templist);
+            }
+
+            var ret = new JsonResult();
+            ret.Data = tempkeyvaluelist;
+            return ret;
+        }
 
     }
 }

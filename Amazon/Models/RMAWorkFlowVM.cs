@@ -9,7 +9,7 @@ namespace Amazon.Models
     {
         public RMAWorkFlowVM()
         {
-            WorkFlowType = REGISTERWORKFLOWSTEPTYPE.RMA;
+            WorkFlowType = "RMAWorkFlowVM";
         }
 
         public override WorkFlowVM CreateNewWorkFlow(string wftid)

@@ -16,7 +16,7 @@ namespace Amazon
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "WorkFlowTemplate", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "WorkFlow", action = "AllWorkFlow", id = UrlParameter.Optional }
             );
         }
     }
