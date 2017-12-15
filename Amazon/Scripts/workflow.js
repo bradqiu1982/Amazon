@@ -1,4 +1,4 @@
-var WorkFlow = function(){
+var WorkFlow = function () {
     var wf_show = function(){
         $('#wf-list').autoComplete({
             minChars: 0,

@@ -178,8 +178,7 @@ var WorkFlowTemplate = function(){
                 };
                 data.push(str_tmp);
             })
-            var wf_id = jsMind.util.uuid.newid();;
-            alert(JSON.stringify(data));
+            var wf_id = jsMind.util.uuid.newid();
             $.post('/WorkFlowTemplate/StortNewWorkFlow',
              {
                  edit_type:edit_type,

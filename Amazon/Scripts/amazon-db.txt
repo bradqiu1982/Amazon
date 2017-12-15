@@ -56,3 +56,21 @@ CREATE TABLE [dbo].[WorkflowStepBaseInfo] (
     [APV3]     DATETIME       DEFAULT ('1982-05-06 10:00:00') NOT NULL
 );
 
+CREATE TABLE [dbo].[WorkFLowLog](
+    [ID] [int] IDENTITY(1,1) NOT NULL,
+    [UserName] [nvarchar](50) NOT NULL,
+    [Machine] [nvarchar](50) NOT NULL,
+    [Url] [nvarchar](200) NOT NULL,
+    [LogType] [tinyint] NOT NULL,
+    [LogLevel] [nvarchar](50) NOT NULL,
+    [OperateModule] [nvarchar](50) NOT NULL,
+    [Operate] [nvarchar](200) NOT NULL,
+    [WFTID] [nvarchar](50) NOT NULL,
+    [WFID] [nvarchar](50) NOT NULL,
+    [NodeID] [nvarchar](50) NOT NULL,
+    [Message] [nvarchar](200) NOT NULL,
+    [Date] [datetime] NOT NULL,
+    [APVal1] [nvarchar](200) NOT NULL,
+    [APVal2] [nvarchar](200) NOT NULL,
+    [APVal3] [nvarchar](max) NOT NULL
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]

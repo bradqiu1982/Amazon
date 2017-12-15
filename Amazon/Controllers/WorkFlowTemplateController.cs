@@ -4,14 +4,34 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Amazon.Models;
+using System.Net;
 
 namespace Amazon.Controllers
 {
     public class WorkFlowTemplateController : Controller
     {
+        private void UserAuth()
+        {
+            var ckdict = CookieUtility.UnpackCookie(this);
+            if (ckdict.ContainsKey("logonuser") && !string.IsNullOrEmpty(ckdict["logonuser"]))
+            {
+                ViewBag.IsLogin = true;
+                ViewBag.EmailAddr = ckdict["logonuser"];
+                ViewBag.UserName = ckdict["logonuser"].Replace("@FINISAR.COM", "");
+            }
+            else
+            {
+                ViewBag.IsLogin = false;
+            }
+        }
 
         public ActionResult AllWorkFlowTemplate(string templatetype)
         {
+            UserAuth();
+            if (!ViewBag.IsLogin)
+            {
+                return RedirectToAction("Index", "Login");
+            }
             ViewBag.WorkFlowTypeList = RegistedWorkFlowType.GetRegistedWorkflowType();
             var vm = WorkFlowTemplateVM.RetrieveAllWorkFlowTemplate();
             if (string.IsNullOrEmpty(templatetype)
@@ -35,6 +55,13 @@ namespace Amazon.Controllers
 
         public ActionResult CreateWorkFlowTemplate()
         {
+            UserAuth();
+
+            if (!ViewBag.IsLogin)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
             return View();
         }
 
@@ -56,18 +83,19 @@ namespace Amazon.Controllers
 
         public JsonResult StortNewWorkFlow()
         {
+
+            var ckdict = CookieUtility.UnpackCookie(this);
+            var username = ckdict["logonuser"];
             var edittype = Request.Form["edit_type"];
             if (string.Compare(edittype, "cache", true) == 0)
             {
-                var ckdict = CookieUtility.UnpackCookie(this);
-                if (ckdict.ContainsKey("updater"))
-                {
-                    var username = ckdict["updater"];
-                    var wfname = Request.Form["wf_name"].ToUpper();
-                    var wftype = Request.Form["wf_type"];
-                    var wfdata = Request.Form["data"];
-                    WorkFlowTemplateVM.CacheWFT(username, wfname, wftype, wfdata);
-                }
+                var wfname = Request.Form["wf_name"].ToUpper();
+                var wftype = Request.Form["wf_type"];
+                var wfdata = Request.Form["data"];
+                WorkFlowTemplateVM.CacheWFT(username, wfname, wftype, wfdata);
+
+                LogVM.WriteLogWithCtrl(this, LogType.WorkFlowTemplate, Log4NetLevel.Info,
+                            "WorkFlowTemplate", "CacheWorkFlowTemplate", "", "", "", "CacheWorkFlowTemplate");
 
                 var ret = new JsonResult();
                 ret.Data = new
@@ -95,6 +123,9 @@ namespace Amazon.Controllers
                 var wfdata = Request.Form["data"];
 
                 WorkFlowTemplateVM.StoreWFT(wfid, wfname, wftype, wfdata);
+
+                LogVM.WriteLogWithCtrl(this, LogType.WorkFlowTemplate, Log4NetLevel.Info,
+                                "WorkFlowTemplate", "CreateWorkFlowTemplate", wfid, "", "", "CreateWorkFlowTemplate");
 
                 ret.Data = new
                 {
@@ -131,6 +162,9 @@ namespace Amazon.Controllers
         {
             var id = Request.Form["nwf_id"];
             WorkFlowTemplateVM.RemoveWFT(id);
+
+            LogVM.WriteLogWithCtrl(this, LogType.WorkFlowTemplate, Log4NetLevel.Info,
+                            "WorkFlowTemplate", "DeleteWorkFlowTemplate", id, "", "", "DeleteWorkFlowTemplate");
             var ret = new JsonResult();
             ret.Data = new
             {

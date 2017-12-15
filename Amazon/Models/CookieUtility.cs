@@ -9,6 +9,12 @@ namespace Amazon.Models
 {
     public class CookieUtility
     {
+        public static bool RemoveCookie(Controller ctrl)
+        {
+            ctrl.Response.Cookies["npi4amazon"].Expires = DateTime.Now.AddDays(-1000);
+            return true;
+        }
+
         public static bool SetCookie(Controller ctrl, Dictionary<string, string> values)
         {
             try
@@ -21,6 +27,11 @@ namespace Amazon.Models
                     foreach (var item in values)
                     {
                         ck.Values[item.Key] = Convert.ToBase64String(UTF8Encoding.UTF8.GetBytes(item.Value));
+                    }
+
+                    if (values.ContainsKey("loginkey"))
+                    {
+                        ck.Expires = DateTime.Now.AddDays(7);
                     }
 
                     if (ctrl.Response.Cookies["npi4amazon"] != null)
@@ -39,6 +50,11 @@ namespace Amazon.Models
                     foreach (var item in values)
                     {
                         ck.Values[item.Key] = Convert.ToBase64String(UTF8Encoding.UTF8.GetBytes(item.Value));
+                    }
+
+                    if (values.ContainsKey("loginkey"))
+                    {
+                        ck.Expires = DateTime.Now.AddDays(7);
                     }
 
                     if (ctrl.Response.Cookies["npi4amazon"] != null)
