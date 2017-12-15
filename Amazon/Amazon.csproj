@@ -25,6 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -44,6 +45,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net-2.0.8\bin\net\4.5\release\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -175,6 +179,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\WorkFlowController.cs" />
     <Compile Include="Controllers\WorkFlowTemplateController.cs" />
     <Compile Include="Global.asax.cs">
@@ -191,6 +196,7 @@
     <Compile Include="Models\EmailUtility.cs" />
     <Compile Include="Models\ExcelReader.cs" />
     <Compile Include="Models\JSNode.cs" />
+    <Compile Include="Models\LogHelper.cs" />
     <Compile Include="Models\RegistedWorkFlowStep.cs" />
     <Compile Include="Models\RegistedWorkFlowType.cs" />
     <Compile Include="Models\RMAModule\CQEAddDispositionForEachSN.cs" />
@@ -217,6 +223,7 @@
     <Compile Include="Models\RMAModule\RMARRKickoffModule.cs" />
     <Compile Include="Models\RMAModule\SecondFANeed.cs" />
     <Compile Include="Models\RMAWorkFlowVM.cs" />
+    <Compile Include="Models\UserVM.cs" />
     <Compile Include="Models\WorkflowStepInterface.cs" />
     <Compile Include="Models\WorkFlowTemplateVM.cs" />
     <Compile Include="Models\WorkFlowVM.cs" />
@@ -573,8 +580,11 @@
     <Content Include="Content\bootstrapfileinput.css" />
     <Content Include="Content\common.css" />
     <Content Include="Content\images\FinisarLogo.jpg" />
+    <Content Include="Content\images\login.png" />
+    <Content Include="Content\images\logo.png" />
     <Content Include="Content\jquery.dataTables.min.css" />
     <Content Include="Content\jsmind.css" />
+    <Content Include="Content\Login.css" />
     <Content Include="Scripts\amazon-db.txt" />
     <Content Include="Scripts\AmazonCfg.txt" />
     <Content Include="Scripts\bootstrap-datepicker\bootstrap-datepicker.js" />
@@ -586,6 +596,7 @@
     <Content Include="Scripts\jsmind\jsmind.draggable.js" />
     <Content Include="Scripts\jsmind\jsmind.js" />
     <Content Include="Scripts\jsmind\jsmind.screenshot.js" />
+    <Content Include="Scripts\login.js" />
     <Content Include="Scripts\npidepartmentmachine.txt" />
     <Content Include="Scripts\StandardPJList.txt" />
     <Content Include="Scripts\workflow.js" />
@@ -649,6 +660,9 @@
     <Content Include="Views\WorkFlowTemplate\AllWorkFlowTemplate.cshtml" />
     <Content Include="Views\WorkFlowTemplate\CreateWorkFlowTemplate.cshtml" />
     <Content Include="Views\WorkFlow\AllWorkFlow.cshtml" />
+    <Content Include="Views\Login\Index.cshtml" />
+    <Content Include="Views\Shared\_LayoutLogin.cshtml" />
+    <Content Include="Views\Login\ResetPWDLink.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
