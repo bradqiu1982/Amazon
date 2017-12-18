@@ -1,6 +1,8 @@
-﻿
+﻿@model IEnumerable<Amazon.Models.WorkFlowTemplateVM>
+
 @{
     ViewBag.Title = "CreateWorkFlowTemplate";
+    var username = "";
 }
 
 <ol class="breadcrumb">
@@ -9,12 +11,17 @@
 </ol>
 
 <script type="text/javascript" src="~/Scripts/workflowtemplate.js"></script>
+
+@if (Model != null && Model.Count() > 0)
+{
+    username = Model.ElementAt(0).WFTID;
+}
+
 <script type="text/javascript">
         $(function(){
-            WorkFlowTemplate.init();
+            WorkFlowTemplate.init('@(username)');
         })
 </script>
-
 <div class="padding-gap">
     <i class="glyphicon glyphicon-zoom-in span-zoom span-zoom-in"></i>
     <i class="glyphicon glyphicon-zoom-out span-zoom span-zoom-out"></i>
@@ -63,4 +70,3 @@
         </div>
     </div>
 </div>
-

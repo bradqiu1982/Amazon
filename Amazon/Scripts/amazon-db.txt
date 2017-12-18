@@ -57,20 +57,35 @@ CREATE TABLE [dbo].[WorkflowStepBaseInfo] (
 );
 
 CREATE TABLE [dbo].[WorkFLowLog](
-    [ID] [int] IDENTITY(1,1) NOT NULL,
-    [UserName] [nvarchar](50) NOT NULL,
-    [Machine] [nvarchar](50) NOT NULL,
-    [Url] [nvarchar](200) NOT NULL,
-    [LogType] [tinyint] NOT NULL,
-    [LogLevel] [nvarchar](50) NOT NULL,
-    [OperateModule] [nvarchar](50) NOT NULL,
-    [Operate] [nvarchar](200) NOT NULL,
-    [WFTID] [nvarchar](50) NOT NULL,
-    [WFID] [nvarchar](50) NOT NULL,
-    [NodeID] [nvarchar](50) NOT NULL,
-    [Message] [nvarchar](200) NOT NULL,
-    [Date] [datetime] NOT NULL,
-    [APVal1] [nvarchar](200) NOT NULL,
-    [APVal2] [nvarchar](200) NOT NULL,
-    [APVal3] [nvarchar](max) NOT NULL
+    [ID] [int] IDENTITY(1,1) DEFAULT (0) NOT NULL,
+    [UserName] [nvarchar](50)  DEFAULT ('')  NOT NULL,
+    [Machine] [nvarchar](50) DEFAULT ('')  NOT NULL,
+    [Url] [nvarchar](500) DEFAULT ('')  NOT NULL,
+    [LogType] [tinyint] DEFAULT (0)  NOT NULL,
+    [LogLevel] [nvarchar](50) DEFAULT ('')  NOT NULL,
+    [OperateModule] [nvarchar](200) DEFAULT ('')  NOT NULL,
+    [Operate] [nvarchar](200) DEFAULT ('')  NOT NULL,
+    [WFTID] [nvarchar](128) DEFAULT ('')  NOT NULL,
+    [WFID] [nvarchar](128) DEFAULT ('')  NOT NULL,
+    [NodeID] [nvarchar](128) DEFAULT ('')  NOT NULL,
+    [Message] [nvarchar](500) DEFAULT ('')  NOT NULL,
+    [Date] [datetime]  DEFAULT ('1982-05-06 10:00:00')  NOT NULL,
+    [APVal1] [nvarchar](200) DEFAULT ('')   NOT NULL,
+    [APVal2] [nvarchar](200) DEFAULT ('')   NOT NULL,
+    [APVal3] [nvarchar](max) DEFAULT ('')   NOT NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+CREATE TABLE [dbo].[UserTable](
+	[UserName] [nvarchar](200) DEFAULT ('')  NOT NULL,
+	[PassWD] [nvarchar](200) DEFAULT ('')  NOT NULL,
+	[Validated] [int] DEFAULT (0)  NOT NULL,
+	[Priority] [int] DEFAULT (1)  NOT NULL,
+	[UpdateDate] [datetime] DEFAULT ('1982-05-06 10:00:00') NOT NULL,
+	[TotalRank] [nvarchar](50) DEFAULT ('')  NOT NULL,
+	[DocTag] [nvarchar](max) DEFAULT ('')  NOT NULL,
+	[APVal1] [nvarchar](max) DEFAULT ('')  NOT NULL,
+	[APVal2] [nvarchar](max) DEFAULT ('')  NOT NULL,
+	[APVal3] [datetime] DEFAULT ('1982-05-06 10:00:00') NOT NULL,
+	[databackuptm] [datetime] DEFAULT ('1982-05-06 10:00:00') NOT NULL
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+

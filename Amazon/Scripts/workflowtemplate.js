@@ -1,44 +1,131 @@
 var WorkFlowTemplate = function(){
-    var wf_create = function(){
+    var wf_create = function(username){
         var _jm = null;
         var _allsteps = [];
-        open_empty();
-        $('#wf-type').autoComplete({
-            minChars: 0,
-            source: function(term, suggest){
-                term = term.toLowerCase();
-                 $.post('/WorkFlowTemplate/RegistedWorkFlowTypeList', {}, function (output){
-                    var choices = output;
-                    var suggestions = [];
-                    for (i=0;i<choices.length;i++){
-                        if (~(choices[i]+' '+choices[i]).toLowerCase().indexOf(term))
-                            suggestions.push(choices[i]);
-                    }
-                    suggest(suggestions);
-                })
-            },
-            onSelect: function(e, term, item){
-                $('#wf-node').autoComplete({
-                    minChars: 0,
-                    source: function(term1, suggest){
-                        term1 = term1.toLowerCase();
-                        $.post('/WorkFlowTemplate/RegistedWorkFlowStepList',
-                        {
-                            type: term
-                        },function (output) {
-                            var choices = output;
-                            _allsteps = output;
-                            var suggestions = [];
-                            for (i=0;i<choices.length;i++){
-                                if (~(choices[i]+' '+choices[i]).toLowerCase().indexOf(term1))
-                                    suggestions.push(choices[i]);
+
+        if (username == '') {
+            open_empty();
+
+            $('#wf-type').autoComplete({
+                minChars: 0,
+                source: function (term, suggest) {
+                    term = term.toLowerCase();
+                    $.post('/WorkFlowTemplate/RegistedWorkFlowTypeList', {}, function (output) {
+                        var choices = output;
+                        var suggestions = [];
+                        for (i = 0; i < choices.length; i++) {
+                            if (~(choices[i] + ' ' + choices[i]).toLowerCase().indexOf(term))
+                                suggestions.push(choices[i]);
+                        }
+                        suggest(suggestions);
+                    })
+                },
+                onSelect: function (e, term, item) {
+
+                    var old_term = $('#wf-type').attr('old_data');
+                    if (old_term != term) {
+                        if (_jm.mind != null && _jm.mind.nodes != null) {
+                            if (confirm("Warning: changing workflow template type will clean current workflow template!")) {
+                                $('#wf-node').autoComplete('destroy');
+                                var mind = {
+                                    "format": "node_array",
+                                    "data": []
+                                }
+                                _jm.show(mind);
+                                $('#wf-node').val('');
                             }
-                            suggest(suggestions);
-                         })
-                    },
-                });
+                            else {
+                                $('#wf-type').val(old_term);
+                                return false;
+                            }
+                        }
+                    }
+                    $('#wf-type').attr('old_data', term);
+
+                    $('#wf-node').autoComplete({
+                        minChars: 0,
+                        source: function (term1, suggest) {
+                            term1 = term1.toLowerCase();
+                            $.post('/WorkFlowTemplate/RegistedWorkFlowStepList',
+                            {
+                                type: term
+                            }, function (output) {
+                                var choices = output;
+                                _allsteps = output;
+                                var suggestions = [];
+                                for (i = 0; i < choices.length; i++) {
+                                    if (~(choices[i] + ' ' + choices[i]).toLowerCase().indexOf(term1))
+                                        suggestions.push(choices[i]);
+                                }
+                                suggest(suggestions);
+                            })
+                        },
+                    });
+                }
+            });
+        }
+        else {
+            var options = {
+                container: 'jsmind_container',
+                theme: 'greensea',
+                editable: true,
+                mode: 'side',
+                view: {
+                    hmargin: 10,
+                    vmargin: 10,
+                    line_width: 2,
+                    line_color: '#555'
+                },
+                layout: {
+                    hspace: 20,
+                    vspace: 10,
+                    pspace: 0
+                },
             }
-        });
+
+            $.post('/WorkFlowTemplate/CachedWorkflowTemplateByName',
+             {
+                 username: username
+             }, function (output) {
+                 if (output.success) {
+                     $('#wf-type').val(output.workflowtype);
+                     $('#nwf-name').val(output.workflowname);
+                     
+                     $('#wf-node').autoComplete('destroy');
+                     $('#wf-node').autoComplete({
+                         minChars: 0,
+                         source: function (term1, suggest) {
+                             term1 = term1.toLowerCase();
+                             $.post('/WorkFlowTemplate/RegistedWorkFlowStepList',
+                             {
+                                 type: output.workflowtype
+                             }, function (output) {
+                                 var choices = output;
+                                 _allsteps = output;
+                                 var suggestions = [];
+                                 for (i = 0; i < choices.length; i++) {
+                                     if (~(choices[i] + ' ' + choices[i]).toLowerCase().indexOf(term1))
+                                         suggestions.push(choices[i]);
+                                 }
+                                 suggest(suggestions);
+                             })
+                         },
+                     });
+
+                     var mind = {
+                         "format": "node_array",
+                         "data": JSON.parse(output.data)
+                     };
+                     var _jm = jsMind.show(options, mind);
+                     _jm.view.setZoom(0.8);
+                 }
+                 else {
+                     alert(output.msg);
+                 }
+             })
+        }
+
+
 
         $('body').on('click', '#add-wf-node', function(){
             var node_id = jsMind.util.uuid.newid();
@@ -187,8 +274,13 @@ var WorkFlowTemplate = function(){
                  wf_name: wf_name,
                  data: JSON.stringify(data)
              }, function(output){
-                 if(output.success){
-                     window.location.href = '/WorkFlowTemplate/AllWorkFlowTemplate';
+                 if (output.success) {
+                     if (edit_type == 'store') {
+                         window.location.href = '/WorkFlowTemplate/AllWorkFlowTemplate';
+                     }
+                     else {
+                         alert("Cache Workflow template successfully!");
+                     }
                  }
                  else{
                      alert(output.msg);
@@ -328,16 +420,19 @@ var WorkFlowTemplate = function(){
         //})
 
         //delete workflow template
-        $('body').on('click', '.del-swf-op', function(){
-            var nwf_id = $(this).parent().attr('data-id');
-            $.post('/WorkFlowTemplate/RemoveWorkFlowTemplateByID',
-             {
-                 nwf_id: nwf_id
-             }, function(output){
-                 if(output.sucess){
-                $(this).parent().parent().parent().remove();
-                 }
-             })
+        $('body').on('click', '.del-swf-op', function () {
+            if (confirm('Do you really want to remove this workflow template ?'))
+            {
+                var nwf_id = $(this).parent().attr('data-id');
+                $.post('/WorkFlowTemplate/RemoveWorkFlowTemplateByID',
+                 {
+                     nwf_id: nwf_id
+                 }, function(output){
+                     if (output.sucess) {
+                         window.location.href = '/WorkFlowTemplate/AllWorkFlowTemplate';
+                     }
+                 })
+            }
         })
         
         $('body').on('click', '.span-zoom-in', function(){
@@ -358,8 +453,8 @@ var WorkFlowTemplate = function(){
         })
     }
     return {
-        init: function(){
-            wf_create();
+        init: function(username){
+            wf_create(username);
         },
         show: function(){
             wf_show();

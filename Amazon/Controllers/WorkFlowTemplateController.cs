@@ -84,18 +84,21 @@ namespace Amazon.Controllers
         public JsonResult StortNewWorkFlow()
         {
 
-            var ckdict = CookieUtility.UnpackCookie(this);
-            var username = ckdict["logonuser"];
+            UserAuth();
+
             var edittype = Request.Form["edit_type"];
             if (string.Compare(edittype, "cache", true) == 0)
             {
-                var wfname = Request.Form["wf_name"].ToUpper();
-                var wftype = Request.Form["wf_type"];
-                var wfdata = Request.Form["data"];
-                WorkFlowTemplateVM.CacheWFT(username, wfname, wftype, wfdata);
+                if (!string.IsNullOrEmpty(ViewBag.UserName))
+                {
+                    var wfname = Request.Form["wf_name"].ToUpper();
+                    var wftype = Request.Form["wf_type"];
+                    var wfdata = Request.Form["data"];
+                    WorkFlowTemplateVM.CacheWFT(ViewBag.UserName, wfname, wftype, wfdata);
 
-                LogVM.WriteLogWithCtrl(this, LogType.WorkFlowTemplate, Log4NetLevel.Info,
-                            "WorkFlowTemplate", "CacheWorkFlowTemplate", "", "", "", "CacheWorkFlowTemplate");
+                    LogVM.WriteLogWithCtrl(this, LogType.WorkFlowTemplate, Log4NetLevel.Info,
+                                "WorkFlowTemplate", "CacheWorkFlowTemplate", "", "", "", "CacheWorkFlowTemplate");
+                }
 
                 var ret = new JsonResult();
                 ret.Data = new
@@ -187,6 +190,34 @@ namespace Amazon.Controllers
 
             var ret = new JsonResult();
             ret.Data = tempkeyvaluelist;
+            return ret;
+        }
+
+        public ActionResult CachedWorkflowTemplate()
+        {
+            UserAuth();
+
+            if (!ViewBag.IsLogin)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+            List<WorkFlowTemplateVM> vm = WorkFlowTemplateVM.RetrieveCachedWFT(ViewBag.UserName);
+            return View("CreateWorkFlowTemplate", vm);
+        }
+
+        public JsonResult CachedWorkflowTemplateByName()
+        {
+            UserAuth();
+            List<WorkFlowTemplateVM> vm = WorkFlowTemplateVM.RetrieveCachedWFT(ViewBag.UserName);
+            var ret = new JsonResult();
+            ret.Data = new
+            {
+                success = true,
+                workflowtype = vm[0].WFTType,
+                workflowname = vm[0].WFTName,
+                data = vm[0].WFTData
+            };
             return ret;
         }
 
