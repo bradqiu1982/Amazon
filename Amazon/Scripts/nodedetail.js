@@ -29,6 +29,30 @@ var NodeDetail = function(){
             };
             _jm = jsMind.show(options, mind);
          })
+
+         $('body').on('click', '#btn-node-submit', function () {
+             var wfid = $('#HWFID').val();
+             var nodeid = $('#HNODEID').val();
+             $.post('/WorkFlow/WorkFlowMoveNext',
+              {
+                  wfid: wfid,
+                  nodeid: nodeid
+              }, function (output) {
+                  window.location.href = '/WorkFlow/WorkFlowNodeDetail?wfid='+wfid+'&nodeid='+output.nodeid;
+              })
+         })
+
+         $('body').on('click', '#btn-node-startnext', function () {
+             var wfid = $('#HWFID').val();
+             var nodeids = $('#nextnodes').val();
+             //$.post('/WorkFlow/WorkFlowMoveNext',
+             // {
+             //     wfid: wfid,
+             //     nodeid: nodeid
+             // }, function (output) {
+             //     window.location.href = '/WorkFlow/WorkFlowNodeDetail?wfid=' + wfid + '&nodeid=' + output.nodeid;
+             // })
+         })
     }
     return {
         init: function(){

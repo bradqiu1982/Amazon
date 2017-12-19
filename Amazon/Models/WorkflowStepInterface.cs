@@ -139,7 +139,7 @@ namespace Amazon.Models
                         tempnode.ChildrenIDList.AddRange(childidliststr.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries));
                         tempnode.ChildrenNameList.AddRange(childnameliststr.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries));
                     }
-                    
+
                     ret.Add(tempnode);
                 }
             }
@@ -204,7 +204,7 @@ namespace Amazon.Models
                 var linktopic = "";
                 if (string.Compare(node.NodeEnable, WORKFLOWNODEENABLE.ENABLE) == 0)
                 {
-                    linktopic = "<a href='/WorkFlow/WorkFlowNodeDetail?wfid=" + node.WorkFlowID + "&nodeid=" + node.NodeID + "'>" + node.StepName + "</a>";
+                    linktopic = "<a style='color: #FFF;' href='/WorkFlow/WorkFlowNodeDetail?wfid=" + node.WorkFlowID + "&nodeid=" + node.NodeID + "'>" + node.StepName + "</a>";
                 }
                 else
                 {
@@ -241,12 +241,13 @@ namespace Amazon.Models
             var idx = 2;
             foreach (var node in nodes)
             {
+                var linktopic = "<a style='color: #FFF;' href='/WorkFlow/WorkFlowNodeDetail?wfid=" + node.WorkFlowID + "&nodeid=" + node.NodeID + "'>" + node.StepName + "</a>";
                 ret.Add(new
                 {
                     id = idx.ToString(),
                     isroot = false,
                     parentid = "1",
-                    topic = node.StepName,
+                    topic = linktopic,
                     background_color = node.BGColor,
                     status = node.NodeEnable
                 });
@@ -254,6 +255,16 @@ namespace Amazon.Models
             }
 
             return ret;
+        }
+
+        public static void UpdateWorkFlowNodeStatus(string wfid, string nodeid, string status)
+        {
+            var sql = "update WorkflowStepBaseInfo set StepStatus = @StepStatus where WorkFlowID = @WorkFlowID and NodeID = @NodeID";
+            var param = new Dictionary<string, string>();
+            param.Add("@WorkFlowID", wfid);
+            param.Add("@NodeID", nodeid);
+            param.Add("@StepStatus", status);
+            DBUtility.ExeLocalSqlNoRes(sql, param);
         }
 
         private string bgcolor;

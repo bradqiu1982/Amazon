@@ -1,5 +1,4 @@
-﻿@model IEnumerable<Amazon.Models.WorkFlowVM>
-
+﻿
 @{
     ViewBag.Title = "WorkFlowNodeDetail";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -54,10 +53,14 @@
     
     <div class="row">
         <div class="form-group col-xs-6"><label>Current Step: </label><label>@(ViewBag.CurrentStepName)</label></div>
+        <div class="form-group col-xs-6"></div>
+    </div>
+
+    <div class="row">
         @if (ViewBag.CurrentChildNameList != null && ViewBag.CurrentChildNameList.Count > 0)
         {
             <div class="form-group col-xs-4">
-                <select id="nextnode" name="nextnode" class="form-control">
+                <select id="nextnodes" name="nextnodes" class="form-control" multiple style="height:30px">
                     <option value="ALL" selected="selected" disabled="disabled">Choose Next Step</option>
                     @foreach (var nodename in ViewBag.CurrentChildNameList)
                     {
@@ -66,32 +69,12 @@
                     }
                 </select>
             </div>
-            <div class="form-group col-xs-2"><button class="btn-success">Start</button></div>
-            <div class="form-group col-xs-2"></div>
-        }
-        else
-        {
-            <div class="form-group col-xs-6"></div>
+            <div class="form-group col-xs-2"><input type="button" class="btn btn-success" id="btn-node-startnext" value="Start"></div>
         }
     </div>
 
+
     <div class="wfn-detail">
-        <div class="form-group col-xs-6">
-            <label>Label1</label>
-            <input type="text" class="form-control" id="input1" name="input1" value="input1">
-        </div>
-        <div class="form-group col-xs-6">
-            <label>Label1</label>
-            <input type="text" class="form-control" id="input1" name="input1" value="input1">
-        </div>
-        <div class="form-group col-xs-6">
-            <label>Label1</label>
-            <input type="text" class="form-control" id="input1" name="input1" value="input1">
-        </div>
-        <div class="form-group col-xs-6">
-            <label>Label1</label>
-            <input type="text" class="form-control" id="input1" name="input1" value="input1">
-        </div>
         <div class="form-group col-xs-6">
             <label>Label1</label>
             <input type="text" class="form-control" id="input1" name="input1" value="input1">

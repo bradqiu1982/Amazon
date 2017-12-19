@@ -51,6 +51,8 @@ namespace Amazon.Controllers
             }
 
             var allworkflow = WorkFlowVM.RetrieveAllWorkFlow(WORKFLOWRUNNINGSTATUS.RUNNING);
+            var doneworkflow = WorkFlowVM.RetrieveAllWorkFlow(WORKFLOWRUNNINGSTATUS.COMPLETE);
+            allworkflow.AddRange(doneworkflow);
             return View(allworkflow);
         }
 
@@ -121,7 +123,9 @@ namespace Amazon.Controllers
         public ActionResult WorkFlowNodeDetail(string wfid, string nodeid)
         {
             var workflowvm = WorkFlowVM.RetrieveWorkFlowByID(wfid);
+
             workflowvm[0].RetireveSpecialInfo(wfid);
+
             var currentnode = WorkflowStepInterface.RetrieveWorkFlowStepByWorkFlowID(wfid,nodeid);
 
             ViewBag.CurrentWFID = wfid;
@@ -136,10 +140,60 @@ namespace Amazon.Controllers
             return View(workflowvm);
         }
 
-        //public JsonResult WorkFlowMoveNext()
-        //{
+        public JsonResult WorkFlowMoveNext()
+        {
+            var ret = new JsonResult();
+            var wfid = Request.Form["wfid"];
+            var nodeid = Request.Form["nodeid"];
+            var currentnode = WorkflowStepInterface.RetrieveWorkFlowStepByWorkFlowID(wfid, nodeid);
+            WorkflowStepInterface.UpdateWorkFlowNodeStatus(wfid, currentnode[0].NodeID, WORKFLOWSTEPSTATUS.done);
 
-        //}
+            if (currentnode[0].IsLogicNode)
+            {
+                ret.Data = new {
+                    nodeid = currentnode[0].NodeID
+                };
+                return ret;
+            }
+            else
+            {
+                if (currentnode[0].ChildrenNameList.Count > 1)
+                {
+                    ret.Data = new
+                    {
+                        nodeid = currentnode[0].NodeID
+                    };
+                    return ret;
+                }
+                else if (currentnode[0].ChildrenNameList.Count == 1)
+                {
+                    var childnode = WorkflowStepInterface.RetrieveWorkFlowStepByWorkFlowID(wfid, currentnode[0].ChildrenIDList[0]);
+                    if (string.Compare(childnode[0].StepStatus, WORKFLOWSTEPSTATUS.pending) == 0)
+                    {
+                        WorkflowStepInterface.UpdateWorkFlowNodeStatus(wfid, currentnode[0].ChildrenIDList[0], WORKFLOWSTEPSTATUS.working);
+                    }
+                    ret.Data = new
+                    {
+                        nodeid = currentnode[0].ChildrenIDList[0]
+                    };
+                    return ret;
+                }
+                else
+                {
+                    var workingnodes = WorkflowStepInterface.RetrieveWorkFlowStepWithStatus(wfid, WORKFLOWSTEPSTATUS.working);
+                    if (workingnodes.Count == 0)
+                    {
+                        WorkFlowVM.UpdateWorkFlowStatus(wfid, WORKFLOWRUNNINGSTATUS.COMPLETE);
+                    }
+                    ret.Data = new
+                    {
+                        nodeid = currentnode[0].NodeID
+                    };
+                    return ret;
+                }
+            }//end else
+        }
+
 
     }
 
