@@ -29,9 +29,25 @@ namespace Amazon.Controllers
         public ActionResult AllWorkFlow()
         {
             UserAuth();
+
             if (!ViewBag.IsLogin)
             {
                 return RedirectToAction("Index", "Login");
+            }
+
+            var ckdict = CookieUtility.UnpackCookie(this);
+            if (ckdict.ContainsKey("logonredirectctrl")
+                && ckdict.ContainsKey("logonredirectact")
+                && !string.IsNullOrEmpty(ckdict["logonredirectact"]) 
+                && !string.IsNullOrEmpty(ckdict["logonredirectctrl"]))
+            {
+                var logonredirectact = ckdict["logonredirectact"];
+                var logonredirectctrl = ckdict["logonredirectctrl"];
+                var ck = new Dictionary<string, string>();
+                ck.Add("logonredirectact", "");
+                ck.Add("logonredirectctrl", "");
+                CookieUtility.SetCookie(this, ck);
+                return RedirectToAction(logonredirectact, logonredirectctrl);
             }
 
             var allworkflow = WorkFlowVM.RetrieveAllWorkFlow(WORKFLOWRUNNINGSTATUS.RUNNING);
