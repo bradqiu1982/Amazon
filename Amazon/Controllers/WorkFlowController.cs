@@ -109,6 +109,37 @@ namespace Amazon.Controllers
             return ret;
         }
 
+        public JsonResult RemoveWorkFlow()
+        {
+            var wfid = Request.Form["wfe_id"];
+            WorkFlowVM.UpdateWorkFlowStatus(wfid, WORKFLOWRUNNINGSTATUS.REMOVED);
+            var ret1 = new JsonResult();
+            ret1.Data = new { success = true };
+            return ret1;
+        }
+
+        public ActionResult WorkFlowNodeDetail(string wfid, string nodeid)
+        {
+            var workflowvm = WorkFlowVM.RetrieveWorkFlowByID(wfid);
+            workflowvm[0].RetireveSpecialInfo(wfid);
+            var currentnode = WorkflowStepInterface.RetrieveWorkFlowStepByWorkFlowID(wfid,nodeid);
+
+            ViewBag.CurrentWFID = wfid;
+            ViewBag.CurrentNodeID = nodeid;
+            ViewBag.CurrentStepName =  currentnode[0].StepName;
+
+            if (string.Compare(currentnode[0].StepStatus,WORKFLOWSTEPSTATUS.done) == 0)
+            {
+                ViewBag.CurrentChildNameList = currentnode[0].ChildrenNameList;
+                ViewBag.CurrentChildIDList = currentnode[0].ChildrenIDList;
+            }
+            return View(workflowvm);
+        }
+
+        //public JsonResult WorkFlowMoveNext()
+        //{
+
+        //}
 
     }
 

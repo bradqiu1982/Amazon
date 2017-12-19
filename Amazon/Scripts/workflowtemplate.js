@@ -10,7 +10,7 @@ var WorkFlowTemplate = function(){
                 minChars: 0,
                 source: function (term, suggest) {
                     term = term.toLowerCase();
-                    $.post('/WorkFlowTemplate/RegistedWorkFlowTypeList', {}, function (output) {
+                    $.post('/WorkFlowTemplate/RegistedWorkFlowStepTypeList', {}, function (output) {
                         var choices = output;
                         var suggestions = [];
                         for (i = 0; i < choices.length; i++) {

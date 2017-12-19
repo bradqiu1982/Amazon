@@ -173,3 +173,35 @@ body{
 .span-zoom-out{
     margin-left: 1%;
 }
+
+/* node detail */
+.wfn-content{
+    border-left: 1px dashed #aaa;
+}
+
+.wfn-view{
+    border-bottom: 1px dashed #aaa;
+}
+
+#wfn-jc-detai{
+    height: 200px;
+}
+
+.wfn-detail{
+    margin-left: 1%;
+    margin-top: 2%;
+}
+
+.wfn-comment{
+    margin-left: 1%;
+    margin-top: 1%;
+}
+
+.wfn-op{
+    float: right;
+}
+
+.btn-op{
+    width: 120px;
+    margin-top: 2%;
+}

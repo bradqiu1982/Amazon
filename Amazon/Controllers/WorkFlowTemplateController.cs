@@ -32,7 +32,7 @@ namespace Amazon.Controllers
             {
                 return RedirectToAction("Index", "Login");
             }
-            ViewBag.WorkFlowTypeList = RegistedWorkFlowType.GetRegistedWorkflowType();
+            ViewBag.WorkFlowTypeList = RegistedWorkFlowType.GetRegistedWorkflowStepType();
             var vm = WorkFlowTemplateVM.RetrieveAllWorkFlowTemplate();
             if (string.IsNullOrEmpty(templatetype)
                 || string.Compare("ALL", templatetype.ToUpper()) == 0)
@@ -66,10 +66,10 @@ namespace Amazon.Controllers
         }
 
 
-        public JsonResult RegistedWorkFlowTypeList()
+        public JsonResult RegistedWorkFlowStepTypeList()
         {
             var ret = new JsonResult();
-            ret.Data = RegistedWorkFlowType.GetRegistedWorkflowType();
+            ret.Data = RegistedWorkFlowType.GetRegistedWorkflowStepType();
             return ret;
         }
 

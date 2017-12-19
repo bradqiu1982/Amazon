@@ -10,6 +10,7 @@ namespace Amazon.Models
         public SecondFANeed()
         {
             StepName = "SecondFANeed";
+            IsLogicNode = true;
         }
     }
 }

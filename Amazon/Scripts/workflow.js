@@ -123,14 +123,14 @@ var WorkFlow = function () {
         //delete workflow
         $('body').on('click', '.del-wfe-op', function(){
             var wfe_id = $(this).parent().attr('data-id');
-            // $.post('/', 
-            // {
-            //     wfe_id: wfe_id
-            // }, function(output){
-            //     if(output.success){
-                $(this).parent().parent().parent().remove();
-            //     }
-            // })
+            $.post('/WorkFlow/RemoveWorkFlow',
+             {
+                 wfe_id: wfe_id
+             }, function(output){
+                 if(output.success){
+                     window.location.reload();
+                 }
+             })
         })
         $('body').on('click', '.d-span-zoom-in', function(){
             var wfe_id = $(this).parent().find('.jc_detail').attr('data-id');

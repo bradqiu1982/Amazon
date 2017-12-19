@@ -39,6 +39,8 @@ namespace Amazon.Models
             IsRoot = false;
             BGColor = "#A6A6A6";
 
+            IsLogicNode = false;
+
             ChildrenIDList = new List<string>();
             ChildrenNameList = new List<string>();
 
@@ -53,6 +55,7 @@ namespace Amazon.Models
         public string StepName { get; set; }
         public string StepStatus { get; set; }
         public bool IsRoot { get; set; }
+        public bool IsLogicNode { get; set; }
 
         public List<string> ChildrenIDList { set; get; }
         public List<string> ChildrenNameList { set; get; }
@@ -198,11 +201,21 @@ namespace Amazon.Models
             var ret = new List<object>();
             foreach (var node in nodes)
             {
+                var linktopic = "";
+                if (string.Compare(node.NodeEnable, WORKFLOWNODEENABLE.ENABLE) == 0)
+                {
+                    linktopic = "<a href='/WorkFlow/WorkFlowNodeDetail?wfid=" + node.WorkFlowID + "&nodeid=" + node.NodeID + "'>" + node.StepName + "</a>";
+                }
+                else
+                {
+                    linktopic = node.StepName;
+                }
+
                 ret.Add(new {
                     id = node.NodeID,
                     isroot = node.IsRoot,
                     parentid = node.ParentNodeID,
-                    topic = node.StepName,
+                    topic = linktopic,
                     line_color = node.LineColor,
                     background_color = node.BGColor,
                     status = node.NodeEnable

@@ -3,7 +3,7 @@
 using System;
 using System.Web;
 using System.IO;
-using Nebula.Models;
+using Amazon.Models;
 
 public class ImageUpload : IHttpHandler {
 

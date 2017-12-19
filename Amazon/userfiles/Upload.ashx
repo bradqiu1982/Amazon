@@ -3,7 +3,7 @@
 using System;
 using System.Web;
 using System.IO;
-using Nebula.Models;
+using Amazon.Models;
 
 public class Upload : IHttpHandler {
 
@@ -58,7 +58,7 @@ public class Upload : IHttpHandler {
                     && dict.ContainsKey("currentaction")
                     && string.Compare(dict["currentaction"],"UpdateIssue") == 0)
                 {
-                    IssueViewModels.StoreIssueAttachment(dict["issuekey"], url);
+                    //IssueViewModels.StoreIssueAttachment(dict["issuekey"], url);
                 }
             }
             context.Response.Write("<script>window.parent.CKEDITOR.tools.callFunction(" + CKEditorFuncNum + ", \"" + url + "\""+");</script>");

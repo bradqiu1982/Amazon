@@ -23,5 +23,10 @@ namespace Amazon.Models
         {
             base.StoreWorkFlow();
         }
+
+        public override void RetireveSpecialInfo(string wftid)
+        {
+
+        }
     }
 }
