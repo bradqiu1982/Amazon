@@ -4,7 +4,6 @@
     Layout = "~/Views/Shared/_LayoutLogin.cshtml";
 }
 
-
 <script src="~/Scripts/login.js" type="text/javascript"></script>
 
 <script>
@@ -13,33 +12,28 @@
     })
 </script>
 
-<div id="login-body"></div>
-<header>
-    <span class="col-xs-3 logo"></span>
-</header>
 <div class="content">
-    <div class="container">
-        <div class="login-welcome">
-            Welcome to Amazon System!
+    <div class="login-welcome">
+        <div class="wel-span1">Amazon</div>
+        <div class="wel-span2">System</div>
+    </div>
+    <div class="login-form-bg"></div>
+    <div class="login-form">
+        <div class="login-title">LOG IN</div>
+        <div>
+            <input class="form-control login-input" type="text" id="login_id" name="login_id" placeholder="Finisar Email" />
         </div>
-        <div class="row login-form">
-            <div class="col-xs-5">
-                <div>
-                    <input class="login-input" type="input" id="login_id" name="login_id" placeholder="Finisar Email" />
-                </div>
-                <div>
-                    <input class="login-input" type="password" id="login_pwd" name="login_pwd" placeholder="Default Password : abc@123" />
-                </div>
-                <div>
-                    <input class="login-btn" type="button" id="login-submit" name="login-submit" value="LOG IN" />
-                </div>
-                <div>
-                    <input class="login-checkbox" type="checkbox" id="remember_me" name="remember_me" checked />
-                    <span class="remember-me">Remember Me</span>
-                    <div class="div-forget-pwd" style="display: inline-block;">
-                        <a class="forget-pwd" href="#">Change password</a>
-                    </div>
-                </div>
+        <div>
+            <input class="form-control login-input" type="password" id="login_pwd" name="login_pwd" placeholder="Default Password : abc@123" />
+        </div>
+        <div>
+            <input class="btn login-btn" type="button" id="login-submit" name="login-submit" value="LOG IN" />
+        </div>
+        <div>
+            <input class="login-checkbox" type="checkbox" id="remember_me" name="remember_me" checked />
+            <span class="remember-me">Remember Me</span>
+            <div class="div-forget-pwd">
+                <a class="forget-pwd" href="#">Change password</a>
             </div>
         </div>
     </div>

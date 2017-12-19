@@ -580,6 +580,7 @@
     <Content Include="Content\bootstrapfileinput.css" />
     <Content Include="Content\common.css" />
     <Content Include="Content\images\FinisarLogo.jpg" />
+    <Content Include="Content\images\home.png" />
     <Content Include="Content\images\login.png" />
     <Content Include="Content\images\logo.png" />
     <Content Include="Content\jquery.dataTables.min.css" />
