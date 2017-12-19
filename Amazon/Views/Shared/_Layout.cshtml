@@ -68,7 +68,6 @@
             </div>
         </nav>
     </div>
-
     <div class="container body-content">
         @RenderBody()
         <hr />
@@ -76,10 +75,6 @@
             <p>&copy; @DateTime.Now.Year - Amazon</p>
         </footer>
     </div>
-
-    @*<script type="text/javascript" src="~/Scripts/jquery-1.12.4.min.js"></script>
-    <script type="text/javascript" src="~/Scripts/bootstrap.min.js"></script>
-    <script type="text/javascript" src="~/Scripts/jquery-autocomplete/jquery.auto-complete.js"></script>*@
     @RenderSection("scripts", required: false)
 </body>
 </html>
