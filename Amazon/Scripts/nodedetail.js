@@ -28,6 +28,7 @@ var NodeDetail = function(){
                 "data": output
             };
             _jm = jsMind.show(options, mind);
+            _jm.view.setZoom(0.6);
          })
 
          $('body').on('click', '#btn-node-submit', function () {

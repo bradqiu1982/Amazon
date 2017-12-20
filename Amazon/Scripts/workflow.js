@@ -109,7 +109,7 @@ var WorkFlow = function () {
                     "data":output
                 };
                 var _jm_tmp = jsMind.show(options, mind);
-                _jm_tmp.view.setZoom(0.8);
+                _jm_tmp.view.setZoom(0.6);
                 _jm[wfe_id] = _jm_tmp;
              })
         })

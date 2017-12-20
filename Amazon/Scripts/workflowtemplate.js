@@ -117,7 +117,7 @@ var WorkFlowTemplate = function(){
                          "data": JSON.parse(output.data)
                      };
                      var _jm = jsMind.show(options, mind);
-                     _jm.view.setZoom(0.8);
+                     _jm.view.setZoom(0.6);
                  }
                  else {
                      alert(output.msg);
@@ -383,7 +383,7 @@ var WorkFlowTemplate = function(){
                         "data": JSON.parse(output.data)
                     };
                     var _jm_tmp = jsMind.show(options, mind);
-                    _jm_tmp.view.setZoom(0.8);
+                    _jm_tmp.view.setZoom(0.6);
                     _jm[wf_id] = _jm_tmp;
                  }
              })
