@@ -1,7 +1,50 @@
-var WorkFlowTemplate = function(){
-    var wf_create = function(username){
+var WorkFlowTemplate = function () {
+
+    var wf_create = function (username) {
         var _jm = null;
         var _allsteps = [];
+
+        var wfnodeComplete = function (type){
+            $('#wf-node').autoComplete({
+                minChars: 0,
+                source: function (term, suggest) {
+                    term = term.toLowerCase();
+                    $.post('/WorkFlowTemplate/RegistedWorkFlowStepList',
+                    {
+                        type: type
+                    }, function (output) {
+                        var choices = output;
+
+                        $.each(output, function (i, value) {
+                            _allsteps.push(value[0])
+                        })
+
+                        var suggestions = [];
+                        for (i = 0; i < choices.length; i++) {
+                            if (~(choices[i] + ' ' + choices[i]).toLowerCase().indexOf(term))
+                                suggestions.push(choices[i]);
+                        }
+                        suggest(suggestions);
+                    })
+                },
+                renderItem: function (item, search) {
+                    search = search.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+                    var re = new RegExp("(" + search.split(' ').join('|') + ")", "gi");
+                    return '<div class="autocomplete-suggestion" data-value="' + item[0] + '" data-type="' + item[1] + '"> ' + item[0].replace(re, "<b>$1</b>") + '</div>';
+                },
+                onSelect: function (e, term, item) {
+                    $('#wf-node').val(item.data('value'));
+                    $('#wf-node').attr('data-value', item.data('value'));
+                    $('#wf-node').attr('data-type', item.data('type'));
+                    if (item.data('type') == 1) {
+                        $('.route-list').removeClass('hidden');
+                    }
+                    else {
+                        $('.route-list').addClass('hidden');
+                    }
+                }
+            });
+        }
 
         if (username == '') {
             open_empty();
@@ -42,25 +85,7 @@ var WorkFlowTemplate = function(){
                     }
                     $('#wf-type').attr('old_data', term);
 
-                    $('#wf-node').autoComplete({
-                        minChars: 0,
-                        source: function (term1, suggest) {
-                            term1 = term1.toLowerCase();
-                            $.post('/WorkFlowTemplate/RegistedWorkFlowStepList',
-                            {
-                                type: term
-                            }, function (output) {
-                                var choices = output;
-                                _allsteps = output;
-                                var suggestions = [];
-                                for (i = 0; i < choices.length; i++) {
-                                    if (~(choices[i] + ' ' + choices[i]).toLowerCase().indexOf(term1))
-                                        suggestions.push(choices[i]);
-                                }
-                                suggest(suggestions);
-                            })
-                        },
-                    });
+                    wfnodeComplete(term);
                 }
             });
         }
@@ -92,25 +117,7 @@ var WorkFlowTemplate = function(){
                      $('#nwf-name').val(output.workflowname);
                      
                      $('#wf-node').autoComplete('destroy');
-                     $('#wf-node').autoComplete({
-                         minChars: 0,
-                         source: function (term1, suggest) {
-                             term1 = term1.toLowerCase();
-                             $.post('/WorkFlowTemplate/RegistedWorkFlowStepList',
-                             {
-                                 type: output.workflowtype
-                             }, function (output) {
-                                 var choices = output;
-                                 _allsteps = output;
-                                 var suggestions = [];
-                                 for (i = 0; i < choices.length; i++) {
-                                     if (~(choices[i] + ' ' + choices[i]).toLowerCase().indexOf(term1))
-                                         suggestions.push(choices[i]);
-                                 }
-                                 suggest(suggestions);
-                             })
-                         },
-                     });
+                     wfnodeComplete(output.workflowtype);
 
                      var mind = {
                          "format": "node_array",
@@ -125,7 +132,62 @@ var WorkFlowTemplate = function(){
              })
         }
 
+        $('#m-route').autoComplete({
+            minChars: 0,
+            source: function (term, suggest) {
+                term = term.toLowerCase();
 
+                var choices = _allsteps;
+                var suggestions = [];
+                for (i = 0; i < choices.length; i++) {
+                    if (~(choices[i]).toLowerCase().indexOf(term))
+                        suggestions.push(choices[i]);
+                }
+                suggest(suggestions);
+
+            },
+            onSelect: function (e, term, item) {
+                $('#m-route').val('');
+                var add_flg = false;
+                $.each($('#m-selected-routes option'), function () {
+                    if ($(this).attr('value') == term) {
+                        add_flg = true;
+                    }
+                })
+                if (!add_flg) {
+                    var appendStr = '<option class="select-item" value="' + term + '" selected>' + term + '</option>';
+                    $(appendStr).appendTo($('#m-selected-routes'));
+                }
+            }
+        });
+
+        $('body').on('click', '.m-btn-cancel', function () {
+            $('#m-selected-routes').empty();
+            $('#modal-route-list').modal('hide');
+        })
+
+        $('body').on('click', '.m-btn-add', function () {
+            var node = $('wf-node').attr('data-value');
+            $.each($('#m-selected-routes option'), function () {
+                $(this).prop('selected', 'true');
+            })
+            var routelists = $('#m-selected-routes').val();
+            if (routelists == null || routelists == '') {
+                alert("Please set routes");
+                return false
+            }
+            $('#route-list').attr('data-node', node);
+            $('#route-list').val(routelists.join(';'));
+            $('#modal-route-list').modal('hide');
+        })
+
+        $('body').on('dblclick', '#m-selected-routes option', function () {
+            $(this).remove();
+        })
+
+        $('body').on('click', '#route-list', function () {
+            $('#modal-route-list').modal('show');
+        })
 
         $('body').on('click', '#add-wf-node', function(){
             var node_id = jsMind.util.uuid.newid();
@@ -133,6 +195,21 @@ var WorkFlowTemplate = function(){
             if(node_val == ""){
                 alert("Please select one step");
                 return false;
+            }
+
+            var node_type = $('#wf-node').attr('data-type');
+            if (node_type == '1') {
+                var node_routelist = $('#route-list').val();
+                if (node_routelist == '') {
+                    alert("Please set route");
+                    return false;
+                }
+                else {
+                    var appendStr = '<span id="' + node_id + '" value="' + node_val + '">' + $('#route-list').val() + '</span>';
+                    $(appendStr).appendTo($('#node-route-list'));
+                    $('#m-selected-routes').empty();
+                    $('#route-list').val('');
+                }
             }
 
             if (_allsteps.indexOf(node_val) == -1)

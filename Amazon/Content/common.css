@@ -205,6 +205,16 @@ body{
     margin-top: 2%;
 }
 
+/* for route list*/
+
+#modal-route-list{
+    margin-top: 15%;
+}
+
+.m-selected-routes{
+    height: 120px;
+}
+
 /* for node detail */
 .wfn-current{
     margin-left: 1%;

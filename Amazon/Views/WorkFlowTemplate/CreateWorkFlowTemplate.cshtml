@@ -32,16 +32,25 @@
 <div class="js-operation">
     <div class="row form-group">
         <label class="col-xs-2">WorkFlowType</label>
-        <div class="col-xs-9">
+        <div class="col-xs-5">
             <input type="text" class="form-control autocomplete-input"
                    id="wf-type" name="wf-type" placeholder="Please choose one workflow type">
         </div>
     </div>
     <div class="row form-group">
         <label class="col-xs-2">StepList</label>
-        <div class="col-xs-9">
+        <div class="col-xs-5">
             <input type="text" class="form-control autocomplete-input"
                    id="wf-node" name="wf-node" autocomplete="off">
+        </div>
+        <div class="route-list hidden">
+            <label class="col-xs-1">RouteList</label>
+            <div class="col-xs-4">
+                <input type="text" class="form-control" id="route-list"
+                       name="route-list" readonly>
+            </div>
+            <div class="hidden" id="node-route-list">
+            </div>
         </div>
     </div>
     <div class="row form-group">
@@ -56,7 +65,7 @@
     <div>
         <div class="row form-group">
             <label class="col-xs-2">NewWorkFlowName</label>
-            <div class="col-xs-9">
+            <div class="col-xs-5">
                 <input type="text" class="form-control"
                        id="nwf-name" name="nwf-name" placeholder="Please enter your new workflow name">
             </div>
@@ -67,6 +76,35 @@
                        id="save-nwf" name="save-nwf" value="Cache">
                 <input type="button" class="btn btn-success nwf-op"
                        id="sumbit-nwf" name="sumbit-nwf" value="Submit">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-route-list" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Choose Route List</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <label>RouteLists</label>
+                    <input type="text" class="form-control autocomplete-input"
+                           id="m-route" name="m-route" autocomplete="off">
+                </div>
+                <div>
+                    <label>Selected Steps</label>
+                    <select class="form-control m-selected-routes"
+                            id="m-selected-routes" name="m-selected-routes" multiple></select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning m-btn-cancel">Close</button>
+                <button type="button" class="btn btn-primary m-btn-add">Add</button>
             </div>
         </div>
     </div>

@@ -221,6 +221,7 @@
     <Compile Include="Models\RMAModule\RMAClerkConfirmFADeliver.cs" />
     <Compile Include="Models\RMAModule\RMACloseFAJO.cs" />
     <Compile Include="Models\RMAModule\RMAFAKickoffModule.cs" />
+    <Compile Include="Models\RMAModule\RMAFANeed.cs" />
     <Compile Include="Models\RMAModule\RMARRKickoffModule.cs" />
     <Compile Include="Models\RMAModule\SecondFANeed.cs" />
     <Compile Include="Models\RMAWorkFlowVM.cs" />

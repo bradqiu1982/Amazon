@@ -10,6 +10,7 @@ namespace Amazon.Models
         public FinalFARCQEReview()
         {
             StepName = "FinalFARCQEReview";
+            IsLogicNode = true;
         }
     }
 }

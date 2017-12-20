@@ -5,13 +5,12 @@ using System.Web;
 
 namespace Amazon.Models
 {
-    public class InitialFARCQEReview : WorkflowStepInterface
+    public class RMAFANeed:WorkflowStepInterface
     {
-        public InitialFARCQEReview()
+        public RMAFANeed()
         {
-            StepName = "InitialFARCQEReview";
+            StepName = "RMAFANeed";
             IsLogicNode = true;
         }
-
     }
 }
