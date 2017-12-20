@@ -342,6 +342,16 @@ var WorkFlowTemplate = function () {
                 };
                 data.push(str_tmp);
             })
+
+            var route = [];
+            $.each($('#node-route-list span'), function () {
+                var str_tmp = {
+                    node_id: $(this).attr('id'),
+                    node_name: $(this).attr('value'),
+                    routelists: $(this).html()
+                }
+                route.push(str_tmp);
+            })
             var wf_id = jsMind.util.uuid.newid();
             $.post('/WorkFlowTemplate/StortNewWorkFlow',
              {
@@ -349,7 +359,8 @@ var WorkFlowTemplate = function () {
                  wf_id: wf_id,
                  wf_type: wf_type,
                  wf_name: wf_name,
-                 data: JSON.stringify(data)
+                 data: JSON.stringify(data),
+                 route: JSON.stringify(route)
              }, function(output){
                  if (output.success) {
                      if (edit_type == 'store') {
