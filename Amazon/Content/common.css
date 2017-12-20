@@ -204,3 +204,43 @@ body{
     width: 120px;
     margin-top: 2%;
 }
+
+/* for node detail */
+.wfn-current{
+    margin-left: 1%;
+    margin-top: 2%;
+}
+.wfn-next{
+    margin: 2% auto 2% 1%;
+    border-bottom: 1px dashed #aaa;
+}
+
+.next-steps{
+    display: inline-block;
+    width: 60%;
+}
+
+.logic-select{
+    margin-bottom: 2%;
+}
+
+.status-op{
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.status-done{
+    font-size: 18px;
+}
+
+.n-step-start{
+    float: right;
+    color: #ec971f;
+    margin: 0;
+}
+
+.n-step-working{
+    float: right;
+    color: #71d129;
+    margin: 0;
+}

@@ -43,19 +43,37 @@ var NodeDetail = function(){
               })
          })
 
-         $('body').on('click', '#btn-node-startnext', function () {
-             var wfid = $('#HWFID').val();
-             var nodeids = JSON.stringify($('#nextnodes').val());
-             $.post('/WorkFlow/ActiveMChildNode',
-              {
-                  wfe_id: wfid,
-                  nodeid: nodeids
-              }, function (output) {
-                  if (output.success)
-                  {
-                      window.location.href = '/WorkFlow/WorkFlowNodeDetail?wfid=' + wfid + '&nodeid=' + output.nodeid;
-                  }
-              })
+         //$('body').on('click', '#btn-node-startnext', function () {
+         //    var wfid = $('#HWFID').val();
+         //    var nodeids = JSON.stringify($('#nextnodes').val());
+         //    $.post('/WorkFlow/ActiveMChildNode',
+         //     {
+         //         wfe_id: wfid,
+         //         nodeid: nodeids
+         //     }, function (output) {
+         //         if (output.success)
+         //         {
+         //             window.location.href = '/WorkFlow/WorkFlowNodeDetail?wfid=' + wfid + '&nodeid=' + output.nodeid;
+         //         }
+         //     })
+         //})
+
+
+         $('body').on('click', '.status-op', function () {
+             var wf_id = $('#HWFID').val();
+             var node_id = $(this).attr('data-node-id');
+             $.post('/WorkFlow/ActiveSChildNode',
+             {
+                 wfid: wf_id,
+                 nodeid: node_id
+             }, function (output) {
+                 if (output.success) {
+                     window.location.reload();
+                 }
+                 else {
+                     alert('Failed Start');
+                 }
+             })
          })
 
          $('body').on('click', '.d-span-zoom-in', function () {

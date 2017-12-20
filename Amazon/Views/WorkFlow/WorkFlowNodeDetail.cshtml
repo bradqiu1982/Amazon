@@ -5,7 +5,7 @@
     var nodeidx = 0;
 }
 
-<link type="text/css" rel="stylesheet" href="~/Content/jquery.multiselect.css" />
+@*<link type="text/css" rel="stylesheet" href="~/Content/jquery.multiselect.css" />*@
 
 
 
@@ -58,17 +58,58 @@
     </div>
     
     <div class="wfn-detail">
-        <div class="row">
-            <div class="form-group col-xs-6"><label>Current Step: </label><label>@(ViewBag.CurrentStepName)</label></div>
-            <div class="form-group col-xs-6"></div>
+        <div class="row wfn-current">
+            <label class="col-xs-3">Current Step: </label>
+            <label class="col-xs-9">@(ViewBag.CurrentStepName)</label>
         </div>
 
-        <div class="row">
+        @if (ViewBag.CurrentChildNameList != null && ViewBag.CurrentChildNameList.Count > 1)
+        {
+            <div class="row wfn-next">
+                <label class="col-xs-3">NextSteps: </label>
+                @*<div class="col-xs-9 logic-select">
+                    <select class="form-control next-steps">
+                        <option value="1" data-id="wf-node-id">SubStepYes</option>
+                        <option value="0" data-id="wf-node-id">SubStepNo</option>
+                    </select>
+                    <input type="button" class="btn btn-success"
+                           id="btn-next-start" name="btn-next-start" value="Start">
+                </div>*@
+
+                <ul class="list-group col-xs-9">
+                @foreach (var nodename in ViewBag.CurrentChildNameList)
+                {
+                    var nextnodestatus = "n-step-start";
+                    var nextnodestatusop = "status-op";
+                    var statustitle = "Start";
+                    var statusicon = "glyphicon-play";
+                    if (string.Compare(ViewBag.CurrentChildStatusList[nodeidx], Amazon.Models.WORKFLOWSTEPSTATUS.pending,true) != 0)
+                    {
+                        nextnodestatus = "n-step-working";
+                        nextnodestatusop = "status-done";
+                        statustitle = "Active";
+                        statusicon = "glyphicon-ok-sign";
+                    }
+
+                    <li class="list-group-item">
+                        <span class="@(nextnodestatus)">
+                            <span class="glyphicon @(statusicon) @(nextnodestatusop)"
+                                  data-node-id="@(ViewBag.CurrentChildIDList[nodeidx])" title="@(statustitle)" data-toggle="tooltip"></span>
+                        </span>
+                        @nodename
+                    </li>
+
+                    nodeidx = nodeidx + 1;
+                }
+                </ul>
+            </div>
+        }
+
+        @*<div class="row">
             @if (ViewBag.CurrentChildNameList != null && ViewBag.CurrentChildNameList.Count > 0)
             {
                 <div class="form-group col-xs-4">
                     <select id="nextnodes" name="nextnodes" multiple>
-                        @*<option value="ALL" selected="selected" disabled="disabled">Choose Next Step</option>*@
                         @foreach (var nodename in ViewBag.CurrentChildNameList)
                         {
                             <option value="@ViewBag.CurrentChildIDList[nodeidx]">@nodename</option>
@@ -86,7 +127,7 @@
                     });
                 </script>
             }
-        </div>
+        </div>*@
     </div>
 
     <div class="wfn-detail">
