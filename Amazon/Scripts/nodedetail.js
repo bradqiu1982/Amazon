@@ -45,7 +45,9 @@ var NodeDetail = function(){
          $('body').on('click', '#btn-node-startnext', function () {
              var wfid = $('#HWFID').val();
              var nodeids = $('#nextnodes').val();
-             //$.post('/WorkFlow/WorkFlowMoveNext',
+             alert(nodeids);
+             console.log(nodeids);
+             //$.post('/WorkFlow/StartNextSteps',
              // {
              //     wfid: wfid,
              //     nodeid: nodeid

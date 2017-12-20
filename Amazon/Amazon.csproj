@@ -191,6 +191,7 @@
     <Compile Include="Models\Common\PlannerCreateReworkJO.cs" />
     <Compile Include="Models\Common\PlannerCreateROSJO.cs" />
     <Compile Include="Models\Common\PlannerSubmitSSD.cs" />
+    <Compile Include="Models\Common\WorkFlowComplete.cs" />
     <Compile Include="Models\CookieUtility.cs" />
     <Compile Include="Models\DBUtility.cs" />
     <Compile Include="Models\EmailUtility.cs" />
@@ -584,6 +585,7 @@
     <Content Include="Content\images\login.png" />
     <Content Include="Content\images\logo.png" />
     <Content Include="Content\jquery.dataTables.min.css" />
+    <Content Include="Content\jquery.multiselect.css" />
     <Content Include="Content\jsmind.css" />
     <Content Include="Content\Login.css" />
     <Content Include="Scripts\amazon-db.txt" />
@@ -594,6 +596,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-1.12.4.min.js" />
     <Content Include="Scripts\jquery-ui.min.js" />
+    <Content Include="Scripts\jquery.multiselect.js" />
     <Content Include="Scripts\jsmind\jsmind.draggable.js" />
     <Content Include="Scripts\jsmind\jsmind.js" />
     <Content Include="Scripts\jsmind\jsmind.screenshot.js" />

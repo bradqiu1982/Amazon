@@ -72,7 +72,65 @@ namespace Amazon.Controllers
         {
             var wfe_id = Request.Form["wfe_id"];
             var workflownodes = WorkflowStepInterface.RetrieveWorkFlowStepWithStatus(wfe_id, WORKFLOWSTEPSTATUS.working);
-            var jsnodes = WorkflowStepInterface.ConstructStatusTree(workflownodes);
+            var jsnodes = new List<object>();
+            if (workflownodes.Count > 0)
+            {
+                jsnodes = WorkflowStepInterface.ConstructStatusTree(workflownodes);
+            }
+            else
+            {
+                var workflow = WorkFlowVM.RetrieveWorkFlowByID(wfe_id);
+                if (string.Compare(workflow[0].WorkFlowRunningStatus, WORKFLOWRUNNINGSTATUS.COMPLETE) == 0)
+                {
+                    var tempnode = new WorkFlowComplete();
+                    tempnode.StepStatus = WORKFLOWSTEPSTATUS.done;
+                    var templist = new List<WorkflowStepInterface>();
+                    templist.Add(tempnode);
+                    jsnodes = WorkflowStepInterface.ConstructStatusTree(templist, false);
+                }
+                else
+                {
+                    workflownodes = WorkflowStepInterface.RetrieveWorkFlowStepWithStatus(wfe_id, WORKFLOWSTEPSTATUS.done);
+                    if (workflownodes.Count > 0)
+                    {
+                        var currentnodedict = new Dictionary<string, bool>();
+                        foreach (var item in workflownodes)
+                        {
+                            currentnodedict.Add(item.NodeID,true);
+                        }//end foreach
+
+                        var templist = new List<WorkflowStepInterface>();
+                        foreach (var item in workflownodes)
+                        {
+                            if (item.ChildrenIDList.Count == 0)
+                            {
+                                templist.Add(item);
+                            }
+                            else
+                            {
+                                bool allnotmatch = true;
+                                foreach (var cid in item.ChildrenIDList)
+                                {
+                                    if (currentnodedict.ContainsKey(cid))
+                                    {
+                                        allnotmatch = false;
+                                    }
+                                }//end foreach
+                                if (allnotmatch)
+                                {
+                                    templist.Add(item);
+                                }
+                            }
+                        }//end foreach
+                        jsnodes = WorkflowStepInterface.ConstructStatusTree(templist);
+                    }
+                    else
+                    {
+                        jsnodes = WorkflowStepInterface.ConstructStatusTree(new List<WorkflowStepInterface>(), false);
+                    }
+                }//end else
+            }//end else
+
             var ret = new JsonResult();
             ret.Data = jsnodes;
             return ret;
@@ -193,7 +251,6 @@ namespace Amazon.Controllers
                 }
             }//end else
         }
-
 
     }
 

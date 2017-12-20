@@ -224,7 +224,7 @@ namespace Amazon.Models
             return ret;
         }
 
-        public static List<object> ConstructStatusTree(List<WorkflowStepInterface> nodes)
+        public static List<object> ConstructStatusTree(List<WorkflowStepInterface> nodes,bool withlink=true)
         {
             var ret = new List<object>();
             ret.Add(new
@@ -241,7 +241,10 @@ namespace Amazon.Models
             var idx = 2;
             foreach (var node in nodes)
             {
-                var linktopic = "<a style='color: #FFF;' href='/WorkFlow/WorkFlowNodeDetail?wfid=" + node.WorkFlowID + "&nodeid=" + node.NodeID + "'>" + node.StepName + "</a>";
+                var linktopic = node.StepName;
+                if (withlink)
+                { linktopic = "<a style='color: #FFF;' href='/WorkFlow/WorkFlowNodeDetail?wfid=" + node.WorkFlowID + "&nodeid=" + node.NodeID + "'>" + node.StepName + "</a>"; }
+
                 ret.Add(new
                 {
                     id = idx.ToString(),
