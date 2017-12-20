@@ -252,6 +252,55 @@ namespace Amazon.Controllers
             }//end else
         }
 
+        public JsonResult ActiveMChildNode()
+        {
+
+            var wfid = Request.Form["wfe_id"];
+            var nodeids = Request.Form["nodeid"];
+            var activenodeid = nodeids;
+
+            var nodeidlist = (List<string>)Newtonsoft.Json.JsonConvert.DeserializeObject(nodeids, (new List<string>()).GetType());
+            foreach (var nid in nodeidlist)
+            {
+                if (string.IsNullOrEmpty(activenodeid))
+                {
+                    activenodeid = nid;
+                }
+                var node = WorkflowStepInterface.RetrieveWorkFlowStepByWorkFlowID(wfid, nid);
+                if (string.Compare(node[0].StepStatus, WORKFLOWSTEPSTATUS.pending) == 0)
+                {
+                    WorkflowStepInterface.UpdateWorkFlowNodeStatus(wfid, nid, WORKFLOWSTEPSTATUS.working);
+                    activenodeid = nid;
+                }
+            }
+            var ret1 = new JsonResult();
+            ret1.Data = new { success = true,
+                nodeid = activenodeid
+            };
+            return ret1;
+        }
+
+        public JsonResult ActiveSChildNode()
+        {
+            var wfid = Request.Form["wfe_id"];
+            var nodeid = Request.Form["nodeid"];
+            WorkflowStepInterface.UpdateWorkFlowNodeStatus(wfid, nodeid, WORKFLOWSTEPSTATUS.working);
+            var ret1 = new JsonResult();
+            ret1.Data = new { success = true };
+            return ret1;
+        }
+
+        public JsonResult WorkFlowNodeStatusByID()
+        {
+            var wfid = Request.Form["wfe_id"];
+            var nodeid = Request.Form["nodeid"];
+
+            var node = WorkflowStepInterface.RetrieveWorkFlowStepByWorkFlowID(wfid, nodeid);
+            var ret1 = new JsonResult();
+            ret1.Data = new { status = node[0].StepStatus };
+            return ret1;
+        }
+
     }
 
 }

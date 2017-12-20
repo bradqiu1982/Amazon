@@ -44,16 +44,34 @@ var NodeDetail = function(){
 
          $('body').on('click', '#btn-node-startnext', function () {
              var wfid = $('#HWFID').val();
-             var nodeids = $('#nextnodes').val();
-             alert(nodeids);
-             console.log(nodeids);
-             //$.post('/WorkFlow/StartNextSteps',
-             // {
-             //     wfid: wfid,
-             //     nodeid: nodeid
-             // }, function (output) {
-             //     window.location.href = '/WorkFlow/WorkFlowNodeDetail?wfid=' + wfid + '&nodeid=' + output.nodeid;
-             // })
+             var nodeids = JSON.stringify($('#nextnodes').val());
+             $.post('/WorkFlow/ActiveMChildNode',
+              {
+                  wfe_id: wfid,
+                  nodeid: nodeids
+              }, function (output) {
+                  if (output.success)
+                  {
+                      window.location.href = '/WorkFlow/WorkFlowNodeDetail?wfid=' + wfid + '&nodeid=' + output.nodeid;
+                  }
+              })
+         })
+
+         $('body').on('click', '.d-span-zoom-in', function () {
+             var wfe_id = $(this).parent().find('.jc_detail').attr('data-id');
+             if (_jm.view.zoomIn()) {
+                 $('.span-zoom').css('color', '#7f7f7f');
+             } else {
+                 $(this).css('color', '#cfcfcf');
+             };
+         })
+         $('body').on('click', '.span-zoom-out', function () {
+             var wfe_id = $(this).parent().find('.jc_detail').attr('data-id');
+             if (_jm.view.zoomOut()) {
+                 $('.span-zoom').css('color', '#7f7f7f');
+             } else {
+                 $(this).css('color', '#cfcfcf');
+             };
          })
     }
     return {
