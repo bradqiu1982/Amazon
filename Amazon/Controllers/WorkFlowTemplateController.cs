@@ -94,7 +94,8 @@ namespace Amazon.Controllers
                     var wfname = Request.Form["wf_name"].ToUpper();
                     var wftype = Request.Form["wf_type"];
                     var wfdata = Request.Form["data"];
-                    WorkFlowTemplateVM.CacheWFT(ViewBag.UserName, wfname, wftype, wfdata);
+                    var wfroute = Request.Form["route"];
+                    WorkFlowTemplateVM.CacheWFT(ViewBag.UserName, wfname, wftype, wfdata, wfroute);
 
                     LogVM.WriteLogWithCtrl(this, LogType.WorkFlowTemplate, Log4NetLevel.Info,
                                 "WorkFlowTemplate", "CacheWorkFlowTemplate", "", "", "", "CacheWorkFlowTemplate");
@@ -124,11 +125,16 @@ namespace Amazon.Controllers
                 var wfid = Request.Form["wf_id"];
                 var wftype = Request.Form["wf_type"];
                 var wfdata = Request.Form["data"];
-
+                var wfroute = Request.Form["route"];
                 WorkFlowTemplateVM.StoreWFT(wfid, wfname, wftype, wfdata);
+                if (!string.IsNullOrEmpty(wfroute) && wfroute.Length > 4)
+                {
+                    WorkFlowTemplateLogicRoute.ParseRoute(wfid,wfdata, wfroute);
+                }
 
-                LogVM.WriteLogWithCtrl(this, LogType.WorkFlowTemplate, Log4NetLevel.Info,
-                                "WorkFlowTemplate", "CreateWorkFlowTemplate", wfid, "", "", "CreateWorkFlowTemplate");
+
+                //LogVM.WriteLogWithCtrl(this, LogType.WorkFlowTemplate, Log4NetLevel.Info,
+                //                "WorkFlowTemplate", "CreateWorkFlowTemplate", wfid, "", "", "CreateWorkFlowTemplate");
 
                 ret.Data = new
                 {
@@ -216,7 +222,8 @@ namespace Amazon.Controllers
                 success = true,
                 workflowtype = vm[0].WFTType,
                 workflowname = vm[0].WFTName,
-                data = vm[0].WFTData
+                data = vm[0].WFTData,
+                route = vm[0].WFTRoute
             };
             return ret;
         }

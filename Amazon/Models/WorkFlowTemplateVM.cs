@@ -13,12 +13,14 @@ namespace Amazon.Models
             WFTName = "";
             WFTType = "";
             WFTData = "";
+            WFTRoute = "";
         }
 
         public string WFTID { set; get; }
         public string WFTName { set; get; }
         public string WFTType { set; get; }
         public string WFTData { set; get; }
+        public string WFTRoute { set; get; }
 
         public static List<WorkFlowTemplateVM> RetrieveAllWorkFlowTemplate()
         {
@@ -87,26 +89,27 @@ namespace Amazon.Models
             DBUtility.ExeLocalSqlNoRes(sql, param2);
         }
 
-        public static void CacheWFT(string UserName, string WFTName, string WFTType, string WFTData)
+        public static void CacheWFT(string UserName, string WFTName, string WFTType, string WFTData,string WFTRoute)
         {
             var sql = "delete from WorkFlowTemplateCache where UserName = @UserName";
             var param1 = new Dictionary<string, string>();
             param1.Add("@UserName", UserName);
             DBUtility.ExeLocalSqlNoRes(sql, param1);
 
-            sql = "insert into WorkFlowTemplateCache(UserName,WFTName,WFTType,WFTData) values(@UserName,@WFTName,@WFTType,@WFTData)";
+            sql = "insert into WorkFlowTemplateCache(UserName,WFTName,WFTType,WFTData,WFTRoute) values(@UserName,@WFTName,@WFTType,@WFTData,@WFTRoute)";
             var param2 = new Dictionary<string, string>();
             param2.Add("@UserName", UserName);
             param2.Add("@WFTName", WFTName);
             param2.Add("@WFTType", WFTType);
             param2.Add("@WFTData", WFTData);
+            param2.Add("@WFTRoute", WFTRoute);
             DBUtility.ExeLocalSqlNoRes(sql, param2);
         }
 
         public static List<WorkFlowTemplateVM> RetrieveCachedWFT(string UserName)
         {
             var ret = new List<WorkFlowTemplateVM>();
-            var sql = "select UserName,WFTName,WFTType,WFTData from WorkFlowTemplateCache where UserName = @UserName";
+            var sql = "select UserName,WFTName,WFTType,WFTData,WFTRoute from WorkFlowTemplateCache where UserName = @UserName";
             var param1 = new Dictionary<string, string>();
             param1.Add("@UserName", UserName);
             var dbret = DBUtility.ExeLocalSqlWithRes(sql, null, param1);
@@ -117,6 +120,7 @@ namespace Amazon.Models
                 temp.WFTName = Convert.ToString(line[1]);
                 temp.WFTType = Convert.ToString(line[2]);
                 temp.WFTData = Convert.ToString(line[3]);
+                temp.WFTRoute = Convert.ToString(line[4]);
                 ret.Add(temp);
             }
             return ret;

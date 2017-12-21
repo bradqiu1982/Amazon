@@ -19,7 +19,7 @@ namespace Amazon.Models
         {
             WorkFlowID = "";
             WFTName = "";
-            WFTID = "WFTID";
+            WFTID = "";
             WorkFlowType = "";
             WorkFlowDesc = "";
             WorkFlowRunningStatus = "";

@@ -227,6 +227,7 @@
     <Compile Include="Models\RMAWorkFlowVM.cs" />
     <Compile Include="Models\UserVM.cs" />
     <Compile Include="Models\WorkflowStepInterface.cs" />
+    <Compile Include="Models\WorkFlowTemplateLogicRoute.cs" />
     <Compile Include="Models\WorkFlowTemplateVM.cs" />
     <Compile Include="Models\WorkFlowVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

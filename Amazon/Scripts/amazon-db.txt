@@ -12,17 +12,30 @@ CREATE TABLE [dbo].[WorkFlowTemplateVM] (
     [APV3]     DATETIME       DEFAULT ('1982-05-06 10:00:00') NOT NULL
 );
 
+CREATE TABLE [dbo].[WorkFlowTemplateLogicRoute] (
+    [WFTID]   NVARCHAR (MAX) DEFAULT ('') NOT NULL,
+    [LogicNodeId]     NVARCHAR (200) DEFAULT ('') NOT NULL,
+    [LogicNodeName]  NVARCHAR (MAX) DEFAULT ('') NOT NULL,
+    [RouteNodeID]     NVARCHAR (MAX) DEFAULT ('') NOT NULL,
+	[RouteNodeName]     NVARCHAR (MAX) DEFAULT ('') NOT NULL,
+	[RouteType]     NVARCHAR (200) DEFAULT ('') NOT NULL,
+	[APV1]     NVARCHAR (MAX) DEFAULT ('') NOT NULL,
+    [APV2]     NVARCHAR (MAX) DEFAULT ('') NOT NULL,
+    [APV3]     DATETIME       DEFAULT ('1982-05-06 10:00:00') NOT NULL
+);
 
 CREATE TABLE [dbo].[WorkFlowTemplateCache] (
     [UserName]   NVARCHAR (MAX) DEFAULT ('') NOT NULL,
     [WFTName]     NVARCHAR (MAX) DEFAULT ('') NOT NULL,
     [WFTType]  NVARCHAR (MAX) DEFAULT ('') NOT NULL,
     [WFTData]     NVARCHAR (MAX) DEFAULT ('') NOT NULL,
+	[WFTRoute]     NVARCHAR (MAX) DEFAULT ('') NOT NULL,
 	[APV1]     NVARCHAR (MAX) DEFAULT ('') NOT NULL,
     [APV2]     NVARCHAR (MAX) DEFAULT ('') NOT NULL,
     [APV3]     DATETIME       DEFAULT ('1982-05-06 10:00:00') NOT NULL
 );
 
+/*ALTER TABLE  WorkFlowTemplateCache Add  WFTRoute  NVARCHAR (MAX) DEFAULT ('') NOT NULL;*/
 
 CREATE TABLE [dbo].[WorkFlowVM] (
     [WorkFlowID]   NVARCHAR (200) DEFAULT ('') NOT NULL,

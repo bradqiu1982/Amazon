@@ -15,6 +15,7 @@ var WorkFlowTemplate = function () {
                     }, function (output) {
                         var choices = output;
 
+                        _allsteps = [];
                         $.each(output, function (i, value) {
                             _allsteps.push(value[0])
                         })
@@ -70,6 +71,7 @@ var WorkFlowTemplate = function () {
                         if (_jm.mind != null && _jm.mind.nodes != null) {
                             if (confirm("Warning: changing workflow template type will clean current workflow template!")) {
                                 $('#wf-node').autoComplete('destroy');
+
                                 var mind = {
                                     "format": "node_array",
                                     "data": []
@@ -118,13 +120,22 @@ var WorkFlowTemplate = function () {
                      
                      $('#wf-node').autoComplete('destroy');
                      wfnodeComplete(output.workflowtype);
-
+                     
                      var mind = {
                          "format": "node_array",
                          "data": JSON.parse(output.data)
                      };
-                     var _jm = jsMind.show(options, mind);
+                     _jm = jsMind.show(options, mind);
                      _jm.view.setZoom(0.6);
+                     if (output.route != null && output.route != '')
+                     {
+                         var routeobj = JSON.parse(output.route);
+                         $.each(routeobj, function (i,value) {
+                             var appendstring = '<span id="' + value.node_id + '" value="' + value.node_name + '">' + value.routelists + '</span>';
+                             $(appendstring).appendTo($('#node-route-list'));
+                         })
+                     }
+
                  }
                  else {
                      alert(output.msg);
@@ -148,42 +159,45 @@ var WorkFlowTemplate = function () {
             },
             onSelect: function (e, term, item) {
                 $('#m-route').val('');
-                var add_flg = false;
-                $.each($('#m-selected-routes option'), function () {
-                    if ($(this).attr('value') == term) {
-                        add_flg = true;
-                    }
-                })
-                if (!add_flg) {
-                    var appendStr = '<option class="select-item" value="' + term + '" selected>' + term + '</option>';
-                    $(appendStr).appendTo($('#m-selected-routes'));
+
+                var currentroutestr = $('#m-selected-routes').html();
+                if (currentroutestr == '') {
+                    currentroutestr = term;
                 }
+                else {
+                    var existarray = currentroutestr.split(';');
+                    if (existarray.indexOf(term) == -1)
+                    {
+                        currentroutestr = currentroutestr + ";" + term;
+                    }
+                }
+                $('#m-selected-routes').html(currentroutestr);
             }
+
         });
 
         $('body').on('click', '.m-btn-cancel', function () {
-            $('#m-selected-routes').empty();
+            $('#m-selected-routes').html('');
             $('#modal-route-list').modal('hide');
         })
 
         $('body').on('click', '.m-btn-add', function () {
             var node = $('wf-node').attr('data-value');
-            $.each($('#m-selected-routes option'), function () {
-                $(this).prop('selected', 'true');
-            })
-            var routelists = $('#m-selected-routes').val();
+
+            var routelists = $('#m-selected-routes').html();
             if (routelists == null || routelists == '') {
-                alert("Please set routes");
+                alert("Please select rollback/jump node");
                 return false
             }
             $('#route-list').attr('data-node', node);
-            $('#route-list').val(routelists.join(';'));
+            $('#route-list').val(routelists);
             $('#modal-route-list').modal('hide');
         })
 
-        $('body').on('dblclick', '#m-selected-routes option', function () {
-            $(this).remove();
-        })
+        //$('body').on('click', '#m-selected-routes option', function () {
+        //    alert('come to here');
+        //    $(this).remove();
+        //})
 
         $('body').on('click', '#route-list', function () {
             $('#modal-route-list').modal('show');
@@ -197,20 +211,7 @@ var WorkFlowTemplate = function () {
                 return false;
             }
 
-            var node_type = $('#wf-node').attr('data-type');
-            if (node_type == '1') {
-                var node_routelist = $('#route-list').val();
-                if (node_routelist == '') {
-                    alert("Please set route");
-                    return false;
-                }
-                else {
-                    var appendStr = '<span id="' + node_id + '" value="' + node_val + '">' + $('#route-list').val() + '</span>';
-                    $(appendStr).appendTo($('#node-route-list'));
-                    $('#m-selected-routes').empty();
-                    $('#route-list').val('');
-                }
-            }
+
 
             if (_allsteps.indexOf(node_val) == -1)
             {
@@ -219,7 +220,23 @@ var WorkFlowTemplate = function () {
                 return false;
             }
 
-            if(_jm.mind == null || _jm.mind.root == null){
+            if (_jm.mind == null || _jm.mind.root == null) {
+
+                var node_type = $('#wf-node').attr('data-type');
+                if (node_type == '1') {
+                    var node_routelist = $('#route-list').val();
+                    if (node_routelist == '') {
+                        alert("Please set route");
+                        return false;
+                    }
+                    else {
+                        var appendStr = '<span id="' + node_id + '" value="' + node_val + '">' + $('#route-list').val() + '</span>';
+                        $(appendStr).appendTo($('#node-route-list'));
+                        $('#m-selected-routes').html('');
+                        $('#route-list').val('');
+                    }
+                }
+
                 var mind = {
                     "format":"node_array",
                     "data":[
@@ -239,6 +256,22 @@ var WorkFlowTemplate = function () {
                 if(selected_node.data['status'] != null && selected_node.data['status'] == 0){
                     return false;
                 }
+
+                var node_type = $('#wf-node').attr('data-type');
+                if (node_type == '1') {
+                    var node_routelist = $('#route-list').val();
+                    if (node_routelist == '') {
+                        alert("Please set route");
+                        return false;
+                    }
+                    else {
+                        var appendStr = '<span id="' + node_id + '" value="' + node_val + '">' + $('#route-list').val() + '</span>';
+                        $(appendStr).appendTo($('#node-route-list'));
+                        $('#m-selected-routes').html('');
+                        $('#route-list').val('');
+                    }
+                }
+
                 var node_before = [];
                 node_before.push(selected_node);
                 get_node_before(selected_node, node_before);
