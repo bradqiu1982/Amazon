@@ -206,6 +206,7 @@
     <Compile Include="Models\RMAModule\CQEIssueRework.cs" />
     <Compile Include="Models\RMAModule\CQEPassModule2Clerk.cs" />
     <Compile Include="Models\RMAModule\CQESubmit2ndFAR.cs" />
+    <Compile Include="Models\RMAModule\CQESubmitFinalFAR.cs" />
     <Compile Include="Models\RMAModule\CQESubmitInitFAR.cs" />
     <Compile Include="Models\RMAModule\CQMDecideLessonLearn.cs" />
     <Compile Include="Models\RMAModule\FinalFARCQEReview.cs" />

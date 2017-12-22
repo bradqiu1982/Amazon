@@ -190,19 +190,27 @@ namespace Amazon.Controllers
             ViewBag.CurrentNodeID = nodeid;
             ViewBag.CurrentStepName =  currentnode[0].StepName;
 
-            if (string.Compare(currentnode[0].StepStatus,WORKFLOWSTEPSTATUS.done) == 0 
-                && currentnode[0].ChildrenIDList.Count > 1)
+            if (currentnode[0].IsLogicNode)
             {
-                ViewBag.CurrentChildNameList = currentnode[0].ChildrenNameList;
-                ViewBag.CurrentChildIDList = currentnode[0].ChildrenIDList;
-                var statuslist = new List<string>();
-                foreach (var cid in currentnode[0].ChildrenIDList)
-                {
-                    var node = WorkflowStepInterface.RetrieveWorkFlowStepByWorkFlowID(wfid, cid);
-                    statuslist.Add(node[0].StepStatus);
-                }
-                ViewBag.CurrentChildStatusList = statuslist;
+                ViewBag.CurrentLogicRouteList = WorkFlowTemplateLogicRoute.RetrieveLogicRoute(workflowvm[0].WFTID,nodeid);
             }
+            else
+            {
+                if (string.Compare(currentnode[0].StepStatus,WORKFLOWSTEPSTATUS.done) == 0 
+                    && currentnode[0].ChildrenIDList.Count > 1)
+                {
+                    ViewBag.CurrentChildNameList = currentnode[0].ChildrenNameList;
+                    ViewBag.CurrentChildIDList = currentnode[0].ChildrenIDList;
+                    var statuslist = new List<string>();
+                    foreach (var cid in currentnode[0].ChildrenIDList)
+                    {
+                        var node = WorkflowStepInterface.RetrieveWorkFlowStepByWorkFlowID(wfid, cid);
+                        statuslist.Add(node[0].StepStatus);
+                    }
+                    ViewBag.CurrentChildStatusList = statuslist;
+                }
+            }
+
             return View(workflowvm);
         }
 
@@ -216,8 +224,14 @@ namespace Amazon.Controllers
 
             if (currentnode[0].IsLogicNode)
             {
-                ret.Data = new {
-                    nodeid = currentnode[0].NodeID
+                var childnode = WorkflowStepInterface.RetrieveWorkFlowStepByWorkFlowID(wfid, currentnode[0].ChildrenIDList[0]);
+                if (string.Compare(childnode[0].StepStatus, WORKFLOWSTEPSTATUS.pending) == 0)
+                {
+                    WorkflowStepInterface.UpdateWorkFlowNodeStatus(wfid, currentnode[0].ChildrenIDList[0], WORKFLOWSTEPSTATUS.working);
+                }
+                ret.Data = new
+                {
+                    nodeid = currentnode[0].ChildrenIDList[0]
                 };
                 return ret;
             }
@@ -306,6 +320,32 @@ namespace Amazon.Controllers
             var node = WorkflowStepInterface.RetrieveWorkFlowStepByWorkFlowID(wfid, nodeid);
             var ret1 = new JsonResult();
             ret1.Data = new { status = node[0].StepStatus };
+            return ret1;
+        }
+
+        public JsonResult LogicJumpNext()
+        {
+            var wfid = Request.Form["wfe_id"];
+            var nodeid = Request.Form["nodeid"];
+            var jumpnodeid = Request.Form["jumpnodeid"];
+            var logiccommet = Request.Form["logiccommet"];
+
+            var workflowvm = WorkFlowVM.RetrieveWorkFlowByID(wfid);
+            bool IsRollBack = WorkFlowTemplateLogicRoute.IsRollBackNode(workflowvm[0].WFTID, nodeid, jumpnodeid);
+            if (IsRollBack)
+            {
+                WorkFlowVM.SetAllChildNodeStatus(wfid,  jumpnodeid, WORKFLOWSTEPSTATUS.pending);
+            }
+            else
+            {
+                WorkFlowVM.SetAllParentNodeStatus(wfid,  jumpnodeid,WORKFLOWSTEPSTATUS.done);
+            }
+
+            WorkflowStepInterface.UpdateWorkFlowNodeStatus(wfid, jumpnodeid, WORKFLOWSTEPSTATUS.working);
+            var ret1 = new JsonResult();
+            ret1.Data = new { success = true,
+                nodeid = jumpnodeid
+            };
             return ret1;
         }
 

@@ -32,6 +32,7 @@ namespace Amazon.Models
             ret.Add(new RegistedWorkFlowStep("CQEPassModule2Clerk", REGISTERWORKFLOWSTEPTYPE.RMA));
             ret.Add(new RegistedWorkFlowStep("CQESubmit2ndFAR", REGISTERWORKFLOWSTEPTYPE.RMA));
             ret.Add(new RegistedWorkFlowStep("CQESubmitInitFAR", REGISTERWORKFLOWSTEPTYPE.RMA));
+            ret.Add(new RegistedWorkFlowStep("CQESubmitFinalFAR", REGISTERWORKFLOWSTEPTYPE.RMA));
             ret.Add(new RegistedWorkFlowStep("CQMDecideLessonLearn", REGISTERWORKFLOWSTEPTYPE.RMA));
             ret.Add(new RegistedWorkFlowStep("FinalFARCQEReview", REGISTERWORKFLOWSTEPTYPE.RMA,true));
             ret.Add(new RegistedWorkFlowStep("InitialFARCQEReview", REGISTERWORKFLOWSTEPTYPE.RMA,true));

@@ -63,45 +63,63 @@
             <label class="col-xs-9">@(ViewBag.CurrentStepName)</label>
         </div>
 
-        @if (ViewBag.CurrentChildNameList != null && ViewBag.CurrentChildNameList.Count > 1)
+        @if ((ViewBag.CurrentChildNameList != null && ViewBag.CurrentChildNameList.Count > 1)
+            ||(ViewBag.CurrentLogicRouteList != null && ViewBag.CurrentLogicRouteList.Count > 0))
         {
             <div class="row wfn-next">
                 <label class="col-xs-3">NextSteps: </label>
-                @*<div class="col-xs-9 logic-select">
-                    <select class="form-control next-steps">
-                        <option value="1" data-id="wf-node-id">SubStepYes</option>
-                        <option value="0" data-id="wf-node-id">SubStepNo</option>
-                    </select>
-                    <input type="button" class="btn btn-success"
-                           id="btn-next-start" name="btn-next-start" value="Start">
-                </div>*@
-
-                <ul class="list-group col-xs-9">
-                @foreach (var nodename in ViewBag.CurrentChildNameList)
+                @if (ViewBag.CurrentLogicRouteList != null && ViewBag.CurrentLogicRouteList.Count > 0)
                 {
-                    var nextnodestatus = "n-step-start";
-                    var nextnodestatusop = "status-op";
-                    var statustitle = "Start";
-                    var statusicon = "glyphicon-play";
-                    if (string.Compare(ViewBag.CurrentChildStatusList[nodeidx], Amazon.Models.WORKFLOWSTEPSTATUS.pending,true) != 0)
-                    {
-                        nextnodestatus = "n-step-working";
-                        nextnodestatusop = "status-done";
-                        statustitle = "Active";
-                        statusicon = "glyphicon-ok-sign";
-                    }
-
-                    <li class="list-group-item">
-                        <span class="@(nextnodestatus)">
-                            <span class="glyphicon @(statusicon) @(nextnodestatusop)"
-                                  data-node-id="@(ViewBag.CurrentChildIDList[nodeidx])" title="@(statustitle)" data-toggle="tooltip"></span>
-                        </span>
-                        @nodename
-                    </li>
-
-                    nodeidx = nodeidx + 1;
+                    <div class="col-xs-9 logic-select">
+                        <div class="form-group">
+                            <select class="form-control next-steps" id="logicnext" name="logicnext">
+                                <option value="" disabled="disabled" selected="selected">Please Choose Next Step</option>
+                                @foreach (var item in ViewBag.CurrentLogicRouteList)
+                                {
+                                    <option value="@(item.RouteNodeID)" data-id="@(item.RouteNodeID)" isrollback="@(item.IsRollBack)">@(item.RouteNodeName)</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Jump Comment</label>
+                            <textarea id="logicroutecomment" name="logicroutecomment" class="form-control" rows="2"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <input type="button" class="btn btn-success"
+                                   id="btn-next-start" name="btn-next-start" value="Start">
+                        </div>
+                    </div>
                 }
-                </ul>
+
+                @if (ViewBag.CurrentChildNameList != null && ViewBag.CurrentChildNameList.Count > 1)
+                {
+                    <ul class="list-group col-xs-9">
+                        @foreach (var nodename in ViewBag.CurrentChildNameList)
+                        {
+                            var nextnodestatus = "n-step-start";
+                            var nextnodestatusop = "status-op";
+                            var statustitle = "Start";
+                            var statusicon = "glyphicon-play";
+                            if (string.Compare(ViewBag.CurrentChildStatusList[nodeidx], Amazon.Models.WORKFLOWSTEPSTATUS.pending, true) != 0)
+                            {
+                                nextnodestatus = "n-step-working";
+                                nextnodestatusop = "status-done";
+                                statustitle = "Active";
+                                statusicon = "glyphicon-ok-sign";
+                            }
+
+                            <li class="list-group-item">
+                                <span class="@(nextnodestatus)">
+                                    <span class="glyphicon @(statusicon) @(nextnodestatusop)"
+                                          data-node-id="@(ViewBag.CurrentChildIDList[nodeidx])" title="@(statustitle)" data-toggle="tooltip"></span>
+                                </span>
+                                @nodename
+                            </li>
+
+                            nodeidx = nodeidx + 1;
+                        }
+                    </ul>
+                }
             </div>
         }
 

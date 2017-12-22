@@ -58,6 +58,36 @@ var NodeDetail = function(){
          //     })
          //})
 
+         $('body').on('click', '#btn-next-start', function () {
+             if ($('#logicnext').val() == null || $('#logicnext').val() == '') {
+                 alert('Please Choose Next Step');
+                 return false;
+             }
+             
+             var jumpnodeid = $('#logicnext option:selected').attr('data-id');
+             var isrollback = $('#logicnext option:selected').attr('isrollback');
+             var logiccommet = $('#logicroutecomment').html();
+             if (isrollback == '1' && logiccommet == '')
+             {
+                 alert('Please input jump comment');
+                 return false;
+             }
+
+            var wfid = $('#HWFID').val();
+            var nodeid = $('#HNODEID').val();
+            $.post('/WorkFlow/LogicJumpNext',
+             {
+                 wfe_id: wfid,
+                 nodeid:nodeid,
+                 jumpnodeid: jumpnodeid,
+                 logiccommet: logiccommet
+             }, function (output) {
+                 if (output.success)
+                 {
+                     window.location.href = '/WorkFlow/WorkFlowNodeDetail?wfid=' + wfid + '&nodeid=' + output.nodeid;
+                 }
+             })
+        })
 
          $('body').on('click', '.status-op', function () {
              var wf_id = $('#HWFID').val();

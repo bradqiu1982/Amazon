@@ -48,16 +48,69 @@ namespace Amazon.Models
         public string RouteNodeName { set; get; }
         public string RouteType { set; get; }
 
+        public string IsRollBack { get {
+                if (string.Compare(RouteType, LOGICROUTETYPE.ROLLBACK) == 0)
+                {
+                    return "1";
+                }
+                else
+                {
+                    return "0";
+                }
+            } }
+
         public void StoreLogicRoute()
         {
-
+            var sql = "insert into WorkFlowTemplateLogicRoute(WFTID,LogicNodeId,LogicNodeName,RouteNodeID,RouteNodeName,RouteType) values(@WFTID,@LogicNodeId,@LogicNodeName,@RouteNodeID,@RouteNodeName,@RouteType)";
+            var param = new Dictionary<string, string>();
+            param.Add("@WFTID", WFTID);
+            param.Add("@LogicNodeId", LogicNodeId);
+            param.Add("@LogicNodeName", LogicNodeName);
+            param.Add("@RouteNodeID", RouteNodeID);
+            param.Add("@RouteNodeName", RouteNodeName);
+            param.Add("@RouteType", RouteType);
+            DBUtility.ExeLocalSqlNoRes(sql, param);
         }
 
-        public static List<WorkFlowTemplateLogicRoute> RetrieveLogicRoute()
+        public static List<WorkFlowTemplateLogicRoute> RetrieveLogicRoute(string WFTID,string LogicNodeId)
         {
             var ret = new List<WorkFlowTemplateLogicRoute>();
-
+            var sql = "select WFTID,LogicNodeId,LogicNodeName,RouteNodeID,RouteNodeName,RouteType from WorkFlowTemplateLogicRoute where WFTID=@WFTID and LogicNodeId=@LogicNodeId";
+            var param = new Dictionary<string, string>();
+            param.Add("@WFTID", WFTID);
+            param.Add("@LogicNodeId", LogicNodeId);
+            var dbret = DBUtility.ExeLocalSqlWithRes(sql, null, param);
+            foreach (var line in dbret)
+            {
+                var tempvm = new WorkFlowTemplateLogicRoute();
+                tempvm.WFTID = Convert.ToString(line[0]);
+                tempvm.LogicNodeId = Convert.ToString(line[1]);
+                tempvm.LogicNodeName = Convert.ToString(line[2]);
+                tempvm.RouteNodeID = Convert.ToString(line[3]);
+                tempvm.RouteNodeName = Convert.ToString(line[4]);
+                tempvm.RouteType = Convert.ToString(line[5]);
+                ret.Add(tempvm);
+            }
             return ret;
+        }
+
+        public static bool IsRollBackNode(string WFTID, string LogicNodeId, string RouteNodeID)
+        {
+            var ret = new List<WorkFlowTemplateLogicRoute>();
+            var sql = "select RouteType from WorkFlowTemplateLogicRoute where WFTID=@WFTID and LogicNodeId=@LogicNodeId and RouteNodeID=@RouteNodeID";
+            var param = new Dictionary<string, string>();
+            param.Add("@WFTID", WFTID);
+            param.Add("@LogicNodeId", LogicNodeId);
+            param.Add("@RouteNodeID", RouteNodeID);
+            var dbret = DBUtility.ExeLocalSqlWithRes(sql, null, param);
+            foreach (var line in dbret)
+            {
+                if (string.Compare(Convert.ToString(line[0]), LOGICROUTETYPE.ROLLBACK) == 0)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public static void ParseRoute(string WFTID,string WFTData, string WFRoute)
@@ -192,7 +245,6 @@ namespace Amazon.Models
             ScanParentID(currentnode, tree, pidlist);
             ScanSonID(currentnode, tree, sidlist);
         }
-
 
 
     }

@@ -233,6 +233,102 @@ namespace Amazon.Models
             }
         }
 
+        private static void SCanSonID(WorkflowStepInterface currentnode, List<WorkflowStepInterface> tree, List<string> sidlist)
+        {
+            if (currentnode.ChildrenIDList.Count == 0)
+            {
+                return;
+            }
+
+            var siddict = new Dictionary<string, bool>();
+            foreach (var id in currentnode.ChildrenIDList)
+            {
+                sidlist.Add(id);
+                siddict.Add(id, true);
+            }
+
+            var SonNodeList = new List<WorkflowStepInterface>();
+            foreach (var item in tree)
+            {
+                if (siddict.ContainsKey(item.NodeID))
+                {
+                    SonNodeList.Add(item);
+                }
+            }
+
+            if (SonNodeList.Count == 0)
+            {
+                return;
+            }
+
+            foreach (var item in SonNodeList)
+            {
+                SCanSonID(item, tree, sidlist);
+            }
+        }
+
+        public static List<string> RetrieveAllChildNodeID(string wfid, string routenodeid)
+        {
+            var tree = WorkflowStepInterface.RetrieveWorkFlowStepByWorkFlowID(wfid);
+            var currentnode = WorkflowStepInterface.RetrieveWorkFlowStepByWorkFlowID(wfid, routenodeid);
+            var sidlist = new List<string>();
+            SCanSonID(currentnode[0], tree, sidlist);
+            return sidlist;
+        }
+
+        public static void SetAllChildNodeStatus(string wfid,string routenodeid, string status)
+        {
+            var sidlist = RetrieveAllChildNodeID(wfid, routenodeid);
+            foreach (var item in sidlist)
+            {
+                WorkflowStepInterface.UpdateWorkFlowNodeStatus(wfid, item, status);
+            }
+        }
+
+        private static void SCanParentID(WorkflowStepInterface currentnode, List<WorkflowStepInterface> tree, List<string> pidlist)
+        {
+            if (string.IsNullOrEmpty(currentnode.ParentNodeID))
+            {
+                return;
+            }
+
+            pidlist.Add(currentnode.ParentNodeID);
+
+            WorkflowStepInterface ParentNode = null;
+            foreach (var item in tree)
+            {
+                if (string.Compare(item.NodeID, currentnode.ParentNodeID) == 0)
+                {
+                    ParentNode = item;
+                    break;
+                }
+            }
+
+            if (ParentNode == null)
+            {
+                return;    
+            }
+
+            SCanParentID(ParentNode, tree, pidlist);
+        }
+
+        public static List<string> RetrieveAllParentNodeID(string wfid, string routenodeid)
+        {
+            var tree = WorkflowStepInterface.RetrieveWorkFlowStepByWorkFlowID(wfid);
+            var currentnode = WorkflowStepInterface.RetrieveWorkFlowStepByWorkFlowID(wfid, routenodeid);
+            var pidlist = new List<string>();
+            SCanParentID(currentnode[0], tree, pidlist);
+            return pidlist;
+        }
+
+        public static void SetAllParentNodeStatus(string wfid, string routenodeid, string status)
+        {
+            var pidlist = RetrieveAllParentNodeID(wfid, routenodeid);
+            foreach (var item in pidlist)
+            {
+                WorkflowStepInterface.UpdateWorkFlowNodeStatus(wfid, item, status);
+            }
+        }
 
 
     }
