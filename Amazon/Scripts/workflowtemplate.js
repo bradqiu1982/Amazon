@@ -1,9 +1,9 @@
 var WorkFlowTemplate = function () {
-
+    var route_selected_color = "#7030A0";
     var wf_create = function (username) {
         var _jm = null;
         var _allsteps = [];
-
+        var route_color = '#9545D0';
         var wfnodeComplete = function (type){
             $('#wf-node').autoComplete({
                 minChars: 0,
@@ -202,6 +202,37 @@ var WorkFlowTemplate = function () {
         $('body').on('click', '#route-list', function () {
             $('#modal-route-list').modal('show');
         })
+        
+        $('body').on('click', 'jmnode', function (event) {
+            var node_id = $(this).attr('nodeid');
+            $('.r-list-group').empty();
+            $('#jmnode-panel').remove();
+            if ($('#' + node_id).length > 0) {
+                $(this).css('background-color', route_selected_color);
+                var routelists = $('#' + node_id).html().split(';');
+                var appendStrtmp = "";
+                $.each(routelists, function (i, info) {
+                    appendStrtmp += '<li class="list-group-item">' + info + '</li > ';
+                })
+                var appendStr = '<div id="jmnode-panel" class="panel panel-info"> ' +
+                        '<div class="triangle_border_up" ><span></span></div>' +
+                        '<div class="panel-heading c-panel-headding">RouteLists</div> ' +
+                        '<ul class="list-group r-list-group r-list-group-l">' + appendStrtmp +'</ul>' +
+                    '</div>';
+                $(appendStr).appendTo($('#jsmind-content'));
+                $('#jmnode-panel').attr('style', 'left: ' + (event.clientX - 50) + 'px; top: ' + (event.clientY + document.documentElement.scrollTop + 20) + 'px;');
+            }
+        })
+
+        $('body').click(function (event) {
+            var target = $(event.target);
+            if (target.closest("#jmnode-panel").length == 0 && target.closest("jmnode").length == 0) {
+                $("#jmnode-panel").hide();
+            }
+            else {
+                $("#jmnode-panel").show();
+            }
+        })
 
         $('body').on('click', '#add-wf-node', function(){
             var node_id = jsMind.util.uuid.newid();
@@ -210,8 +241,6 @@ var WorkFlowTemplate = function () {
                 alert("Please select one step");
                 return false;
             }
-
-
 
             if (_allsteps.indexOf(node_val) == -1)
             {
@@ -240,7 +269,7 @@ var WorkFlowTemplate = function () {
                 var mind = {
                     "format":"node_array",
                     "data":[
-                        {"id": node_id, "isroot":true, "topic": node_val}
+                        { "id": node_id, "isroot": true, "topic": node_val, "background_color": (node_type == "1") ? route_color :""}
                     ]
                 };
                 _jm.show(mind);
@@ -286,7 +315,6 @@ var WorkFlowTemplate = function () {
                 if(selected_node.children != null){
                     for(var i = 0; i< selected_node.children.length; i++){
                         if(node_val == selected_node.children[i].topic){
-                            alert("This step has already exist");
                             alert('Step ' + node_val + ' has already exist in its brother step');
                             $('#wf-node').val('');
                             return false;
@@ -294,7 +322,7 @@ var WorkFlowTemplate = function () {
                     }
                 }
 
-                _jm.add_node(selected_node, node_id, node_val);
+                _jm.add_node(selected_node, node_id, node_val, { "background_color": (node_type == "1") ? route_color : ""});
                 _jm.select_node(node_id);
                 $('#wf-node').val('');
             }
@@ -339,6 +367,7 @@ var WorkFlowTemplate = function () {
                 };
             }
         })
+
         $('body').on('click', '.span-zoom-out', function(){
             if(_jm.mind != null && _jm.mind.root != null){
                 if (_jm.view.zoomOut()) {
@@ -366,12 +395,13 @@ var WorkFlowTemplate = function () {
                 return false;
             }
             var data = [];
-            $.each(jm_data, function(){
+            $.each(jm_data, function () {
                 var str_tmp = {
                     id: this.id,
                     topic: this.topic,
                     isroot: this.isroot,
-                    parentid: (this.parent != null) ? this.parent.id : ""
+                    parentid: (this.parent != null) ? this.parent.id : "",
+                    background_color: this.data.background_color
                 };
                 data.push(str_tmp);
             })
@@ -555,7 +585,6 @@ var WorkFlowTemplate = function () {
                  })
             }
         })
-        
         $('body').on('click', '.span-zoom-in', function(){
             var idx = $(this).parent().find('.jc').attr('data-id');
             if (_jm[idx].view.zoomIn()) {
@@ -571,6 +600,61 @@ var WorkFlowTemplate = function () {
             } else {
                 $(this).css('color', '#cfcfcf');
             };
+        })
+        $('body').on('click', 'jmnode', function (event) {
+            var wft_id = $(this).parent().parent().parent().attr('data-id');
+            var node_id = $(this).attr('nodeid');
+            if ($('#hidden-nodeid').val() == node_id) {
+                $('#jmnode-panel').attr('style', 'left: ' + (event.clientX - 50) + 'px; top: ' + (event.clientY + document.documentElement.scrollTop + 20) + 'px;');
+                $('#jmnode-panel').show();
+            }
+            else {
+                //$.post('/',
+                //{
+                //    wf_id: wf_id,
+                //    node_id: node_id
+                //}, function (output) {
+                    $('.r-list-group').empty();
+                    //if (output.success) {
+                        $('#jmnode-panel').remove();
+                        $('#hidden-nodeid').val(node_id);
+                        var routelists = [['RouteStep1', '1'], ['RouteStep2', '2']];
+                        if (routelists.length > 0) {
+                            $(this).css('background-color', route_selected_color);
+                            var appendStrtmp = "";
+                            $.each(routelists, function (i, info) {
+                                var direction = info[1] == '1' ? 'backward' : 'forward';
+                                var title = info[1] == '1' ? 'Rollback' : 'Jump';
+                                appendStrtmp += '<li class="list-group-item">' +
+                                        '<span class="route-type glyphicon glyphicon-' +
+                                        direction + '" title="' + title + '" data-toggle="tooltip">' +
+                                        '</span>' +
+                                        '<span class="">' + info[0] + '</span>' +
+                                    '</li > ';
+                            })
+                            var appendStr = '<div id="jmnode-panel" class="panel panel-info"> ' +
+                                    '<div class="triangle_border_up" ><span></span></div>' +
+                                    '<div class="panel-heading c-panel-headding">RouteLists</div> ' +
+                                    '<ul class="list-group r-list-group r-list-group-l">' + appendStrtmp + '</ul>' +
+                                '</div>';
+                            $(appendStr).appendTo($('.wf-list'));
+                            $('#jmnode-panel').attr('style', 'left: ' + (event.clientX - 50) + 'px; top: ' + (event.clientY + document.documentElement.scrollTop + 20) + 'px;');
+                        }
+                //    }
+                //    else {
+                //        $('#jmnode-panel').remove();
+                //    }
+                //});
+            }
+        })
+        $('body').click(function (event) {
+            var target = $(event.target);
+            if (target.closest("#jmnode-panel").length == 0 && target.closest("jmnode").length == 0) {
+                $("#jmnode-panel").hide();
+            }
+            else {
+                $("#jmnode-panel").show();
+            }
         })
     }
     return {

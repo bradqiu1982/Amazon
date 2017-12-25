@@ -254,3 +254,51 @@ body{
     color: #71d129;
     margin: 0;
 }
+
+/* for showing logic node's routes */
+.js-routelists {
+    margin-top: 1%;
+    border-bottom: 1px #aaa dashed;
+}
+
+.r-list-group-c {
+    padding-left: 15px;
+}
+
+.list-group-item{
+    padding: 8px 10px;
+}
+
+#jmnode-panel{
+    position: absolute;
+    font-size: 9pt;
+    width: 300px;
+    margin-bottom: 0px;
+    border-color: transparent;
+    z-index: 1000;
+}
+
+.c-panel-headding {
+    padding: 5px 8px;
+}
+
+.route-type {
+    float: right;
+    margin: -2px 5px;
+    color: #FF9F00;
+}
+
+.triangle_border_up {
+    width: 0;
+    height: 0;
+    border-width: 0 10px 10px;
+    border-style: solid;
+    border-color: transparent transparent #d9edf7;
+    margin-top: -10px;
+    margin-left: 40px;
+    position: relative;
+}
+
+.r-list-group-c {
+    border: 1px solid #bce8f1;
+}
