@@ -228,5 +228,41 @@ namespace Amazon.Controllers
             return ret;
         }
 
+        public JsonResult LogicRouteOfNode()
+        {
+            var wftid = Request.Form["wf_id"];
+            var logicnodeid = Request.Form["node_id"];
+            var logicnodelist = WorkFlowTemplateLogicRoute.RetrieveLogicRoute(wftid, logicnodeid);
+            if (logicnodelist.Count > 0)
+            {
+                var retdata = new List<List<string>>();
+                foreach (var item in logicnodelist)
+                {
+                    var templist = new List<string>();
+                    templist.Add(item.RouteNodeName);
+                    if (string.Compare(item.RouteType, LOGICROUTETYPE.ROLLBACK,true) == 0){
+                        templist.Add("1");
+                    }
+                    else {
+                        templist.Add("2");
+                    }
+                    retdata.Add(templist);
+                }
+
+                var ret = new JsonResult();
+                ret.Data = new {
+                    success = true,
+                    data = retdata
+                };
+                return ret;
+            }
+            else
+            {
+                var ret = new JsonResult();
+                ret.Data = new { success = false };
+                return ret;
+            }
+        }
+
     }
 }
