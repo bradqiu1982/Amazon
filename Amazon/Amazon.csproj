@@ -210,6 +210,7 @@
     <Compile Include="Models\RMAModule\CQESubmitInitFAR.cs" />
     <Compile Include="Models\RMAModule\CQMDecideLessonLearn.cs" />
     <Compile Include="Models\RMAModule\FinalFARCQEReview.cs" />
+    <Compile Include="Models\RMAModule\InformCQEForLearn.cs" />
     <Compile Include="Models\RMAModule\InitialFARCQEReview.cs" />
     <Compile Include="Models\RMAModule\PETESubmitFVRFAR.cs" />
     <Compile Include="Models\RMAModule\PEUpdateFlow.cs" />
@@ -218,8 +219,9 @@
     <Compile Include="Models\RMAModule\RMAAdminUpdateTrackingNum.cs" />
     <Compile Include="Models\RMAModule\RMAAssitantConfirmCACompleted.cs" />
     <Compile Include="Models\RMAModule\RMAClerkAssignCQE.cs" />
-    <Compile Include="Models\RMAModule\RMAClerkConfireWareHouseDeliver.cs" />
+    <Compile Include="Models\RMAModule\RMAClerkConfirmWareHouseDeliver.cs" />
     <Compile Include="Models\RMAModule\RMAClerkConfirmFADeliver.cs" />
+    <Compile Include="Models\RMAModule\RMAClosed.cs" />
     <Compile Include="Models\RMAModule\RMACloseFAJO.cs" />
     <Compile Include="Models\RMAModule\RMAFAKickoffModule.cs" />
     <Compile Include="Models\RMAModule\RMAFANeed.cs" />
@@ -591,6 +593,7 @@
     <Content Include="Content\jquery.multiselect.css" />
     <Content Include="Content\jsmind.css" />
     <Content Include="Content\Login.css" />
+    <Compile Include="Models\Common\PlannerCreateRRJO.cs" />
     <Content Include="Scripts\amazon-db.txt" />
     <Content Include="Scripts\AmazonCfg.txt" />
     <Content Include="Scripts\bootstrap-datepicker\bootstrap-datepicker.js" />

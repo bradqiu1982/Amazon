@@ -40,16 +40,19 @@ namespace Amazon.Models
             ret.Add(new RegistedWorkFlowStep("PEUpdateFlow", REGISTERWORKFLOWSTEPTYPE.RMA));
             ret.Add(new RegistedWorkFlowStep("PQEApprove", REGISTERWORKFLOWSTEPTYPE.RMA));
             ret.Add(new RegistedWorkFlowStep("RMAAdminBookSO", REGISTERWORKFLOWSTEPTYPE.RMA));
-            ret.Add(new RegistedWorkFlowStep("RMAAdminUpdateTrackingNum", REGISTERWORKFLOWSTEPTYPE.RMA));
+            ret.Add(new RegistedWorkFlowStep("RMAAdminUpdateTrackingNum", REGISTERWORKFLOWSTEPTYPE.RMA, true));
             ret.Add(new RegistedWorkFlowStep("RMAAssitantConfirmCACompleted", REGISTERWORKFLOWSTEPTYPE.RMA));
             ret.Add(new RegistedWorkFlowStep("RMAClerkAssignCQE", REGISTERWORKFLOWSTEPTYPE.RMA));
-            ret.Add(new RegistedWorkFlowStep("RMAClerkConfireWareHouseDeliver", REGISTERWORKFLOWSTEPTYPE.RMA));
+            ret.Add(new RegistedWorkFlowStep("RMAClerkConfirmWareHouseDeliver", REGISTERWORKFLOWSTEPTYPE.RMA));
             ret.Add(new RegistedWorkFlowStep("RMAClerkConfirmFADeliver", REGISTERWORKFLOWSTEPTYPE.RMA));
             ret.Add(new RegistedWorkFlowStep("RMACloseFAJO", REGISTERWORKFLOWSTEPTYPE.RMA));
             ret.Add(new RegistedWorkFlowStep("RMAFAKickoffModule", REGISTERWORKFLOWSTEPTYPE.RMA));
             ret.Add(new RegistedWorkFlowStep("RMARRKickoffModule", REGISTERWORKFLOWSTEPTYPE.RMA));
             ret.Add(new RegistedWorkFlowStep("SecondFANeed", REGISTERWORKFLOWSTEPTYPE.RMA,true));
             ret.Add(new RegistedWorkFlowStep("RMAFANeed", REGISTERWORKFLOWSTEPTYPE.RMA,true));
+            ret.Add(new RegistedWorkFlowStep("InformCQEForLearn", REGISTERWORKFLOWSTEPTYPE.RMA));
+            ret.Add(new RegistedWorkFlowStep("RMAClosed", REGISTERWORKFLOWSTEPTYPE.RMA));
+            ret.Add(new RegistedWorkFlowStep("PlannerCreateRRJO", REGISTERWORKFLOWSTEPTYPE.RMA)); 
 
             ret.Sort(delegate (RegistedWorkFlowStep step1, RegistedWorkFlowStep step2)
             {

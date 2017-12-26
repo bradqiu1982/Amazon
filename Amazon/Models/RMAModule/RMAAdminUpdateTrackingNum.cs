@@ -10,6 +10,7 @@ namespace Amazon.Models
         public RMAAdminUpdateTrackingNum()
         {
             StepName = "RMAAdminUpdateTrackingNum";
+            IsLogicNode = true;
         }
     }
 }

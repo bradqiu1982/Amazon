@@ -1,5 +1,4 @@
-﻿
-
+﻿DROP TABLE [dbo].[WorkFlowTemplateVM];
 CREATE TABLE [dbo].[WorkFlowTemplateVM] (
     [WFTID]   NVARCHAR (MAX) DEFAULT ('') NOT NULL,
     [WFTName]     NVARCHAR (MAX) DEFAULT ('') NOT NULL,
@@ -12,6 +11,7 @@ CREATE TABLE [dbo].[WorkFlowTemplateVM] (
     [APV3]     DATETIME       DEFAULT ('1982-05-06 10:00:00') NOT NULL
 );
 
+DROP TABLE [dbo].[WorkFlowTemplateLogicRoute];
 CREATE TABLE [dbo].[WorkFlowTemplateLogicRoute] (
     [WFTID]   NVARCHAR (MAX) DEFAULT ('') NOT NULL,
     [LogicNodeId]     NVARCHAR (200) DEFAULT ('') NOT NULL,
@@ -24,6 +24,7 @@ CREATE TABLE [dbo].[WorkFlowTemplateLogicRoute] (
     [APV3]     DATETIME       DEFAULT ('1982-05-06 10:00:00') NOT NULL
 );
 
+DROP TABLE [dbo].[WorkFlowTemplateCache];
 CREATE TABLE [dbo].[WorkFlowTemplateCache] (
     [UserName]   NVARCHAR (MAX) DEFAULT ('') NOT NULL,
     [WFTName]     NVARCHAR (MAX) DEFAULT ('') NOT NULL,
@@ -37,6 +38,7 @@ CREATE TABLE [dbo].[WorkFlowTemplateCache] (
 
 /*ALTER TABLE  WorkFlowTemplateCache Add  WFTRoute  NVARCHAR (MAX) DEFAULT ('') NOT NULL;*/
 
+DROP TABLE [dbo].[WorkFlowVM];
 CREATE TABLE [dbo].[WorkFlowVM] (
     [WorkFlowID]   NVARCHAR (200) DEFAULT ('') NOT NULL,
     [WFTName]     NVARCHAR (MAX) DEFAULT ('') NOT NULL,
@@ -52,6 +54,7 @@ CREATE TABLE [dbo].[WorkFlowVM] (
 );
 
 
+DROP TABLE [dbo].[WorkflowStepBaseInfo];
 CREATE TABLE [dbo].[WorkflowStepBaseInfo] (
     [WorkFlowID]   NVARCHAR (200) DEFAULT ('') NOT NULL,
     [NodeID]     NVARCHAR (200) DEFAULT ('') NOT NULL,
@@ -69,8 +72,9 @@ CREATE TABLE [dbo].[WorkflowStepBaseInfo] (
     [APV3]     DATETIME       DEFAULT ('1982-05-06 10:00:00') NOT NULL
 );
 
+DROP TABLE [dbo].[WorkFLowLog];
 CREATE TABLE [dbo].[WorkFLowLog](
-    [ID] [int] IDENTITY(1,1) DEFAULT (0) NOT NULL,
+    [ID] [int] IDENTITY(1,1) NOT NULL,
     [UserName] [nvarchar](50)  DEFAULT ('')  NOT NULL,
     [Machine] [nvarchar](50) DEFAULT ('')  NOT NULL,
     [Url] [nvarchar](500) DEFAULT ('')  NOT NULL,
@@ -86,7 +90,7 @@ CREATE TABLE [dbo].[WorkFLowLog](
     [APVal1] [nvarchar](200) DEFAULT ('')   NOT NULL,
     [APVal2] [nvarchar](200) DEFAULT ('')   NOT NULL,
     [APVal3] [nvarchar](max) DEFAULT ('')   NOT NULL
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY];
 
 CREATE TABLE [dbo].[UserTable](
 	[UserName] [nvarchar](200) DEFAULT ('')  NOT NULL,
