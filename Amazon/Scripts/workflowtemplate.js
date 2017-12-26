@@ -608,6 +608,7 @@ var WorkFlowTemplate = function () {
             };
         })
         $('body').on('click', 'jmnode', function (event) {
+            var that = this;
             var wft_id = $(this).parent().parent().parent().attr('data-id');
             var node_id = $(this).attr('nodeid');
             if ($('#hidden-nodeid').val() == node_id) {
@@ -626,7 +627,7 @@ var WorkFlowTemplate = function () {
                         $('#hidden-nodeid').val(node_id);
                         var routelists = output.data;
                         if (routelists.length > 0) {
-                            $(this).css('background-color', route_selected_color);
+                            $(that).css('background-color', route_selected_color);
                             var appendStrtmp = "";
                             $.each(routelists, function (i, info) {
                                 var direction = info[1] == '1' ? 'backward' : 'forward';
