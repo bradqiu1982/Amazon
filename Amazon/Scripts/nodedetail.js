@@ -92,18 +92,23 @@ var NodeDetail = function(){
          $('body').on('click', '.status-op', function () {
              var wf_id = $('#HWFID').val();
              var node_id = $(this).attr('data-node-id');
-             $.post('/WorkFlow/ActiveSChildNode',
+             var node_name = $(this).attr('data-node-name');
+
+             if (confirm('you will start sub-flow ' + node_name))
              {
-                 wfid: wf_id,
-                 nodeid: node_id
-             }, function (output) {
-                 if (output.success) {
-                     window.location.reload();
-                 }
-                 else {
-                     alert('Failed Start');
-                 }
-             })
+                 $.post('/WorkFlow/ActiveSChildNode',
+                 {
+                     wfid: wf_id,
+                     nodeid: node_id
+                 }, function (output) {
+                     if (output.success) {
+                         window.location.reload();
+                     }
+                     else {
+                         alert('Failed Start');
+                     }
+                 })
+             }
          })
 
          $('body').on('click', '.d-span-zoom-in', function () {
