@@ -274,6 +274,9 @@ var WorkFlowTemplate = function () {
                 };
                 _jm.show(mind);
                 _jm.select_node(node_id);
+                if (node_type == '1') {
+                    $('jmnode.selected').css('background-color', route_selected_color);
+                }
                 $('#wf-node').val('');
             }
             else{
@@ -324,25 +327,28 @@ var WorkFlowTemplate = function () {
 
                 _jm.add_node(selected_node, node_id, node_val, { "background_color": (node_type == "1") ? route_color : ""});
                 _jm.select_node(node_id);
+                if (node_type == '1') {
+                    $('jmnode.selected').css('background-color', route_selected_color);
+                }
                 $('#wf-node').val('');
             }
         })
 
         $('body').on('click', '#del-wf-node', function(){
             var selected_id = get_selected_nodeid();
-            if(selected_id == _jm.mind.root.id){
-                var mind = {
-                    "format":"node_array",
-                    "data":[]
-                }
-                _jm.show(mind);
-                return false;
-            }
-            if(!selected_id){
+            if (!selected_id) {
                 alert('please select one step first.');
                 return;
             }
-            if(confirm("If you delete this step, all of next steps will be delete, Please confirm to delete this step？")){
+            if (confirm("If you delete this step, all of next steps will be delete, Please confirm to delete this step？")) {
+                if (_jm.mind != null && selected_id == _jm.mind.root.id) {
+                    var mind = {
+                        "format": "node_array",
+                        "data": []
+                    }
+                    _jm.show(mind);
+                    return false;
+                }
                 _jm.remove_node(selected_id);
             }
         })
