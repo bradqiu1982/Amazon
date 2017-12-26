@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Amazon.Models.Common
+namespace Amazon.Models
 {
     public class PlannerCreateRRJO : WorkflowStepInterface
     {
