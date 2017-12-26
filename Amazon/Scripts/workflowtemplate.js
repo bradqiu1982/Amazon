@@ -609,16 +609,16 @@ var WorkFlowTemplate = function () {
                 $('#jmnode-panel').show();
             }
             else {
-                //$.post('/',
-                //{
-                //    wf_id: wf_id,
-                //    node_id: node_id
-                //}, function (output) {
+                $.post('/WorkFlowTemplate/LogicRouteOfNode',
+                {
+                    wf_id: wft_id,
+                    node_id: node_id
+                }, function (output) {
                     $('.r-list-group').empty();
-                    //if (output.success) {
+                    if (output.success) {
                         $('#jmnode-panel').remove();
                         $('#hidden-nodeid').val(node_id);
-                        var routelists = [['RouteStep1', '1'], ['RouteStep2', '2']];
+                        var routelists = output.data;
                         if (routelists.length > 0) {
                             $(this).css('background-color', route_selected_color);
                             var appendStrtmp = "";
@@ -640,11 +640,11 @@ var WorkFlowTemplate = function () {
                             $(appendStr).appendTo($('.wf-list'));
                             $('#jmnode-panel').attr('style', 'left: ' + (event.clientX - 50) + 'px; top: ' + (event.clientY + document.documentElement.scrollTop + 20) + 'px;');
                         }
-                //    }
-                //    else {
-                //        $('#jmnode-panel').remove();
-                //    }
-                //});
+                    }
+                    else {
+                        $('#jmnode-panel').remove();
+                    }
+                });
             }
         })
         $('body').click(function (event) {
